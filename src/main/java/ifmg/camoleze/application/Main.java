@@ -2,8 +2,9 @@ package ifmg.camoleze.application;
 
 import ifmg.camoleze.entities.AirNetwork;
 import ifmg.camoleze.entities.Airport;
+import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
-import ifmg.camoleze.structs.ArrayList;
+import ifmg.camoleze.structs.EdgeProcessor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,6 +16,8 @@ public class Main {
     public static void readAirportsFromFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
+
+            // Lendo Aeroportos
             while ((line = br.readLine()) != null) {
                 if (line.trim().equals("!")) break;
                 if (!line.trim().startsWith("#")) {
@@ -23,6 +26,8 @@ public class Main {
                     airNetwork.addVertex(airport);
                 }
             }
+
+            // Lendo Rotas
             int id = 0;
             while ((line = br.readLine()) != null) {
                 if (line.trim().equals("!")) break;
@@ -49,6 +54,35 @@ public class Main {
                     }
                 }
             }
+
+            //Lendo Voos
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().startsWith("#")) {
+                     String[] values = line.split(";");
+
+                    Airport source = null, destin = null;
+                    for (Airport airport : airNetwork.getVertices()) {
+                        if (source != null && destin != null) break;
+                        String abbr = airport.getAbbreviation();
+                        if (abbr.equals(values[2])) {
+                            source = airport;
+                        } else if (abbr.equals(values[4])) {
+                            destin = airport;
+                        }
+                    }
+
+                    if (source != null && destin != null) {
+                        Flight flight = new Flight(Integer.parseInt(values[1]));
+                        flight.setAirline(values[0]);
+                        flight.setDeparture(values[3]);
+                        flight.setArrival(values[5]);
+                        flight.setStops(Integer.parseInt(values[6]));
+                        airNetwork.addEdge(source, destin, flight);
+                    }
+
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -61,17 +95,12 @@ public class Main {
         String filePath = "MalhaAereaUSA.csv";
         readAirportsFromFile(filePath);
 
-        ArrayList<ArrayList<Route>> edges = airNetwork.getRoutes().getEdges();
-        ArrayList<Airport> vertices = airNetwork.getRoutes().getVertices();
-        for (int i = 0; i < edges.size(); i++) {
-            for (int j = 0; j < edges.get(i).size(); j++) {
-                if (i != j && edges.get(i).get(j) != null) {
-                    String abbrSource = vertices.get(i).getAbbreviation();
-                    String abbrDestin = vertices.get(j).getAbbreviation();
-                    int distance = edges.get(i).get(j).getDistance();
-                    System.out.printf("%s-->%d-->%s\n", abbrSource, distance, abbrDestin);
-                }
-            }
-        }
+        EdgeProcessor<Airport, Flight> processor = (source, flight, destin) -> {
+            String abbrSource = source.getAbbreviation();
+            String abbrDestin = destin.getAbbreviation();
+            System.out.printf("%s-->%s-->%s\n", abbrSource, flight.toString(), abbrDestin);
+        };
+
+        airNetwork.getFlights().processEdges(processor);
     }
 }

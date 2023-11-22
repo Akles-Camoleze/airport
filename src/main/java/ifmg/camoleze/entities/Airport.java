@@ -1,10 +1,7 @@
 package ifmg.camoleze.entities;
 
 import java.util.TimeZone;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import ifmg.camoleze.structs.ArrayList;
+
 
 public class Airport {
     private String abbreviation;
@@ -62,6 +59,8 @@ public class Airport {
     public Integer getLongitude() {
         return longitude;
     }
+
+
 
     @Override
     public String toString() {

@@ -17,4 +17,12 @@ public class Route extends RequiredAttributes {
     public void setDistance(Integer distance) {
         this.distance = distance;
     }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "distance=" + distance +
+                ", id=" + id +
+                '}';
+    }
 }

@@ -1,6 +1,9 @@
 package ifmg.camoleze.structs;
 
+import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.RequiredAttributes;
+import ifmg.camoleze.entities.Route;
+
 
 public class Graph<K, V extends RequiredAttributes> {
     private final ArrayList<K> vertices;
@@ -24,9 +27,7 @@ public class Graph<K, V extends RequiredAttributes> {
             vertices.add(vertex);
         }
 
-        for (ArrayList<V> edge : edges) {
-            edge.add(null);
-        }
+        this.edges.forEach(edge -> edge.add(null));
 
         ArrayList<V> edge = new ArrayList<>();
         for (int i = 0; i < vertices.size(); i++) {
@@ -51,4 +52,18 @@ public class Graph<K, V extends RequiredAttributes> {
     public ArrayList<ArrayList<V>> getEdges() {
         return edges;
     }
+
+    public <T> void processEdges(EdgeProcessor<K, V> edgeProcessor) {
+        for (int i = 0; i < edges.size(); i++) {
+            for (int j = 0; j < edges.get(i).size(); j++) {
+                if (i != j && edges.get(i).get(j) != null) {
+                    K source = vertices.get(i);
+                    K destin = vertices.get(j);
+                    edgeProcessor.process(source, edges.get(i).get(j), destin);
+                }
+            }
+        }
+    }
+
 }
+
