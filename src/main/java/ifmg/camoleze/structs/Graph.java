@@ -1,9 +1,7 @@
 package ifmg.camoleze.structs;
 
-import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.RequiredAttributes;
 import ifmg.camoleze.entities.RequiredMethods;
-import ifmg.camoleze.entities.Route;
 
 
 public class Graph<K extends RequiredMethods, V extends RequiredAttributes & RequiredMethods> {

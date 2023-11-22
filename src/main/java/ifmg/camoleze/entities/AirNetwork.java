@@ -3,10 +3,12 @@ package ifmg.camoleze.entities;
 import ifmg.camoleze.structs.ArrayList;
 import ifmg.camoleze.structs.Graph;
 
+import java.util.Optional;
+
 public class AirNetwork {
-    private ArrayList<Airport> vertices;
-    private Graph<Airport, Route> routes;
-    private Graph<Airport, Flight> flights;
+    private final ArrayList<Airport> vertices;
+    private final Graph<Airport, Route> routes;
+    private final Graph<Airport, Flight> flights;
 
     public AirNetwork() {
         this.vertices = new ArrayList<>();
@@ -31,5 +33,14 @@ public class AirNetwork {
         return flights;
     }
 
+    public Airport findVertexByAbbreviation(String abbr) {
+        for (Airport airport : vertices) {
+            String value = airport.getAbbreviation();
+            if (value != null && value.equals(abbr)) {
+                return airport;
+            }
+        }
+        return null;
+    }
 
 }
