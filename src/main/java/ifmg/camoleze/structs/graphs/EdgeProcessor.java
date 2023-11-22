@@ -1,4 +1,4 @@
-package ifmg.camoleze.structs;
+package ifmg.camoleze.structs.graphs;
 
 @FunctionalInterface
 public interface EdgeProcessor<K, V> {

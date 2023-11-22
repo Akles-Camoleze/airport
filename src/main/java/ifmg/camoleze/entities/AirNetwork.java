@@ -1,9 +1,7 @@
 package ifmg.camoleze.entities;
 
-import ifmg.camoleze.structs.ArrayList;
-import ifmg.camoleze.structs.Graph;
-
-import java.util.Optional;
+import ifmg.camoleze.structs.lists.ArrayList;
+import ifmg.camoleze.structs.graphs.Graph;
 
 public class AirNetwork {
     private final ArrayList<Airport> vertices;

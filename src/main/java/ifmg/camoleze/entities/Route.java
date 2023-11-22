@@ -1,6 +1,7 @@
 package ifmg.camoleze.entities;
 
-import java.util.TimeZone;
+import ifmg.camoleze.entities.requirements.RequiredAttributes;
+import ifmg.camoleze.entities.requirements.RequiredMethods;
 
 public class Route extends RequiredAttributes implements RequiredMethods {
     private Integer distance;

@@ -1,4 +1,4 @@
-package ifmg.camoleze.structs;
+package ifmg.camoleze.structs.lists;
 
 import java.util.Iterator;
 

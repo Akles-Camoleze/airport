@@ -1,7 +1,8 @@
-package ifmg.camoleze.structs;
+package ifmg.camoleze.structs.graphs;
 
-import ifmg.camoleze.entities.RequiredAttributes;
-import ifmg.camoleze.entities.RequiredMethods;
+import ifmg.camoleze.entities.requirements.RequiredAttributes;
+import ifmg.camoleze.entities.requirements.RequiredMethods;
+import ifmg.camoleze.structs.lists.ArrayList;
 
 
 public class Graph<K extends RequiredMethods, V extends RequiredAttributes & RequiredMethods> {

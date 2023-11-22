@@ -1,5 +1,7 @@
 package ifmg.camoleze.entities;
 
+import ifmg.camoleze.entities.requirements.RequiredMethods;
+
 import java.util.TimeZone;
 
 

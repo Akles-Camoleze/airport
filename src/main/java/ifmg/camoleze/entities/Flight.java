@@ -1,6 +1,7 @@
 package ifmg.camoleze.entities;
 
-import java.util.Date;
+import ifmg.camoleze.entities.requirements.RequiredAttributes;
+import ifmg.camoleze.entities.requirements.RequiredMethods;
 
 public class Flight extends RequiredAttributes implements RequiredMethods {
     private String airline;
