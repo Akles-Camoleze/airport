@@ -1,4 +1,4 @@
-package ifmg.camoleze.entities.requirements;
+package ifmg.camoleze.requirements;
 
 public interface RequiredMethods {
     default String showInGraph() {

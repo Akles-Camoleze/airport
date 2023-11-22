@@ -1,12 +1,13 @@
 package ifmg.camoleze.entities;
 
+import ifmg.camoleze.structs.lists.CollectionList;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.graphs.Graph;
 
 public class AirNetwork {
     private final ArrayList<Airport> vertices;
     private final Graph<Airport, Route> routes;
-    private final Graph<Airport, Flight> flights;
+    private final Graph<Airport, CollectionList<Flight>> flights;
 
     public AirNetwork() {
         this.vertices = new ArrayList<>();
@@ -27,7 +28,7 @@ public class AirNetwork {
         return routes;
     }
 
-    public Graph<Airport, Flight> getFlights() {
+    public Graph<Airport, CollectionList<Flight>> getFlights() {
         return flights;
     }
 

@@ -1,10 +1,13 @@
 package ifmg.camoleze.structs.graphs;
 
-import ifmg.camoleze.entities.requirements.RequiredAttributes;
-import ifmg.camoleze.entities.requirements.RequiredMethods;
+import ifmg.camoleze.requirements.RequiredAttributes;
+import ifmg.camoleze.requirements.RequiredMethods;
 import ifmg.camoleze.structs.lists.ArrayList;
+import ifmg.camoleze.structs.lists.CollectionList;
+import ifmg.camoleze.structs.lists.List;
 
 
+@SuppressWarnings("unchecked")
 public class Graph<K extends RequiredMethods, V extends RequiredAttributes & RequiredMethods> {
     private final ArrayList<K> vertices;
     private final ArrayList<ArrayList<V>> edges;
@@ -36,13 +39,18 @@ public class Graph<K extends RequiredMethods, V extends RequiredAttributes & Req
         edges.add(edge);
     }
 
-    public void addEdge(K source, K destination, V value) {
+    public void addEdge(K source, K destination, Object value) {
         int sourceIndex = vertices.indexOf(source);
         int destinationIndex = vertices.indexOf(destination);
 
         if (sourceIndex == -1 || destinationIndex == -1) return;
 
-        edges.get(sourceIndex).set(destinationIndex, value);
+        ArrayList<V> edge = edges.get(sourceIndex);
+        if (edge.get(destinationIndex) instanceof CollectionList<?>) {
+            ((CollectionList<V>) edge.get(destinationIndex)).getCollection().set(destinationIndex, (V) value);
+            return;
+        }
+        edges.get(sourceIndex).set(destinationIndex, (V) value);
     }
 
     public ArrayList<K> getVertices() {

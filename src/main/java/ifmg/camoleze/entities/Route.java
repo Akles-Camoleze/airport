@@ -1,7 +1,7 @@
 package ifmg.camoleze.entities;
 
-import ifmg.camoleze.entities.requirements.RequiredAttributes;
-import ifmg.camoleze.entities.requirements.RequiredMethods;
+import ifmg.camoleze.requirements.RequiredAttributes;
+import ifmg.camoleze.requirements.RequiredMethods;
 
 public class Route extends RequiredAttributes implements RequiredMethods {
     private Integer distance;

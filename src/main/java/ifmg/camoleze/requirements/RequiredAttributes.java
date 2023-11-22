@@ -1,4 +1,4 @@
-package ifmg.camoleze.entities.requirements;
+package ifmg.camoleze.requirements;
 
 public abstract class RequiredAttributes {
     protected int id;
