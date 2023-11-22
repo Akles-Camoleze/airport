@@ -2,7 +2,7 @@ package ifmg.camoleze.entities;
 
 import java.util.Date;
 
-public class Flight extends RequiredAttributes {
+public class Flight extends RequiredAttributes implements RequiredMethods {
     private String airline;
     private String departure;
     private String arrival;
@@ -50,6 +50,11 @@ public class Flight extends RequiredAttributes {
 
     public void setStops(Integer stops) {
         this.stops = stops;
+    }
+
+    @Override
+    public String showInGraph() {
+        return this.toString();
     }
 
     @Override

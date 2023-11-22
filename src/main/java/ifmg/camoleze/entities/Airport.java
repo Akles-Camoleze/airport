@@ -3,7 +3,7 @@ package ifmg.camoleze.entities;
 import java.util.TimeZone;
 
 
-public class Airport {
+public class Airport implements RequiredMethods {
     private String abbreviation;
     private String name;
     private TimeZone timeZone;
@@ -60,7 +60,10 @@ public class Airport {
         return longitude;
     }
 
-
+    @Override
+    public String showInGraph() {
+        return this.abbreviation;
+    }
 
     @Override
     public String toString() {

@@ -50,7 +50,7 @@ public class Main {
                         double y = Math.pow(destin.getLatitude() - source.getLatitude(), 2);
                         int distance = (int) Math.sqrt(x + y);
                         Route route = new Route(id++, distance);
-                        airNetwork.addEdge(source, destin, route);
+                        airNetwork.getRoutes().addEdge(source, destin, route);
                     }
                 }
             }
@@ -77,7 +77,7 @@ public class Main {
                         flight.setDeparture(values[3]);
                         flight.setArrival(values[5]);
                         flight.setStops(Integer.parseInt(values[6]));
-                        airNetwork.addEdge(source, destin, flight);
+                        airNetwork.getFlights().addEdge(source, destin, flight);
                     }
 
                 }
@@ -94,13 +94,7 @@ public class Main {
 
         String filePath = "MalhaAereaUSA.csv";
         readAirportsFromFile(filePath);
-
-        EdgeProcessor<Airport, Flight> processor = (source, flight, destin) -> {
-            String abbrSource = source.getAbbreviation();
-            String abbrDestin = destin.getAbbreviation();
-            System.out.printf("%s-->%s-->%s\n", abbrSource, flight.toString(), abbrDestin);
-        };
-
-        airNetwork.getFlights().processEdges(processor);
+        airNetwork.getFlights().showEdges();
+        airNetwork.getRoutes().showEdges();
     }
 }

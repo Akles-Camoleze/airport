@@ -2,10 +2,11 @@ package ifmg.camoleze.structs;
 
 import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.RequiredAttributes;
+import ifmg.camoleze.entities.RequiredMethods;
 import ifmg.camoleze.entities.Route;
 
 
-public class Graph<K, V extends RequiredAttributes> {
+public class Graph<K extends RequiredMethods, V extends RequiredAttributes & RequiredMethods> {
     private final ArrayList<K> vertices;
     private final ArrayList<ArrayList<V>> edges;
 
@@ -53,7 +54,7 @@ public class Graph<K, V extends RequiredAttributes> {
         return edges;
     }
 
-    public <T> void processEdges(EdgeProcessor<K, V> edgeProcessor) {
+    private void processEdges(EdgeProcessor<K, V> edgeProcessor) {
         for (int i = 0; i < edges.size(); i++) {
             for (int j = 0; j < edges.get(i).size(); j++) {
                 if (i != j && edges.get(i).get(j) != null) {
@@ -63,6 +64,16 @@ public class Graph<K, V extends RequiredAttributes> {
                 }
             }
         }
+    }
+
+    public void showEdges() {
+        EdgeProcessor<K, V> processor = (source, value, destin) -> {
+            String abbrSource = source.showInGraph();
+            String abbrDestin = destin.showInGraph();
+            String valueToShow = value.showInGraph();
+            System.out.printf("%s-->%s-->%s\n", abbrSource, valueToShow, abbrDestin);
+        };
+        this.processEdges(processor);
     }
 
 }

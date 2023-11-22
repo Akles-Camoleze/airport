@@ -2,7 +2,7 @@ package ifmg.camoleze.entities;
 
 import java.util.TimeZone;
 
-public class Route extends RequiredAttributes {
+public class Route extends RequiredAttributes implements RequiredMethods {
     private Integer distance;
 
     public Route(int id, int distance) {
@@ -16,6 +16,11 @@ public class Route extends RequiredAttributes {
 
     public void setDistance(Integer distance) {
         this.distance = distance;
+    }
+
+    @Override
+    public String showInGraph() {
+        return this.distance.toString();
     }
 
     @Override
