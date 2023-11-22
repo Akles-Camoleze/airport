@@ -39,10 +39,16 @@ public class Graph<K, V extends RequiredAttributes> {
         int sourceIndex = vertices.indexOf(source);
         int destinationIndex = vertices.indexOf(destination);
 
-        if (sourceIndex == -1 || destinationIndex == -1) {
-            throw new IllegalArgumentException("Os vértices devem existir antes de adicionar uma aresta");
-        }
+        if (sourceIndex == -1 || destinationIndex == -1) return;
 
         edges.get(sourceIndex).set(destinationIndex, value);
+    }
+
+    public ArrayList<K> getVertices() {
+        return vertices;
+    }
+
+    public ArrayList<ArrayList<V>> getEdges() {
+        return edges;
     }
 }

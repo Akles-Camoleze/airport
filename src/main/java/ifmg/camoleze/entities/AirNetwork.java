@@ -19,6 +19,14 @@ public class AirNetwork {
         this.flights.addVertex(vertex);
     }
 
+    public void addEdge(Airport source, Airport destination, Route route) {
+        this.routes.addEdge(source, destination, route);
+    }
+
+    public void addEdge(Airport source, Airport destination, Flight flight) {
+        this.flights.addEdge(source, destination, flight);
+    }
+
     public ArrayList<Airport> getVertices() {
         return vertices;
     }

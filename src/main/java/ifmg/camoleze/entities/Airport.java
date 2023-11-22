@@ -43,6 +43,26 @@ public class Airport {
         return airport;
     }
 
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TimeZone getTimeZone() {
+        return timeZone;
+    }
+
+    public Integer getLatitude() {
+        return latitude;
+    }
+
+    public Integer getLongitude() {
+        return longitude;
+    }
+
     @Override
     public String toString() {
         return "Airport{" +
