@@ -20,9 +20,9 @@ public class Graph<K, V extends RequiredAttributes> {
     }
 
     public void addVertex(K vertex) {
-        if (vertices.indexOf(vertex) != -1) return;
-
-        vertices.add(vertex);
+        if (vertices.indexOf(vertex) == -1) {
+            vertices.add(vertex);
+        }
 
         for (ArrayList<V> edge : edges) {
             edge.add(null);

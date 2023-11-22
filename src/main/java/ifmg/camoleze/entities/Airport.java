@@ -33,28 +33,7 @@ public class Airport {
         this.longitude = longitude;
     }
 
-    public static ArrayList<Airport> readAirportsFromFile(String filePath) {
-        ArrayList<Airport> airports = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.trim().equals("!")) break;
-                if (!line.trim().startsWith("#")) {
-                    String[] values = line.split(";");
-                    Airport airport = createAirportFromValues(values);
-                    airports.add(airport);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println(airports.size());
-        }
-
-        return airports;
-    }
-
-    private static Airport createAirportFromValues(String[] values) {
+    public static Airport createAirportFromValues(String[] values) {
         Airport airport = new Airport();
         airport.setAbbreviation(values[0]);
         airport.setTimeZone(TimeZone.getTimeZone("GMT" + values[1]));
