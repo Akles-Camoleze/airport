@@ -1,10 +1,10 @@
 package ifmg.camoleze.structs.graphs;
 
-import ifmg.camoleze.requirements.RequiredMethods;
+import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
 
 
-public class ArrayGraph<K extends RequiredMethods, V extends RequiredMethods> implements Graph<K, V> {
+public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K, V, ArrayList<ArrayList<V>>> {
     private final ArrayList<K> vertices;
     private final ArrayList<ArrayList<V>> edges;
 
@@ -15,7 +15,7 @@ public class ArrayGraph<K extends RequiredMethods, V extends RequiredMethods> im
 
     /**
      * Construtor dedicado a grafos com vertices compartilhados.
-     * */
+     */
     public ArrayGraph(ArrayList<K> vertices) {
         this.vertices = vertices;
         this.edges = new ArrayList<>();

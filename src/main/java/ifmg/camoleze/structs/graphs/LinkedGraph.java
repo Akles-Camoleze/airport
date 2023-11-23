@@ -1,10 +1,10 @@
 package ifmg.camoleze.structs.graphs;
 
-import ifmg.camoleze.requirements.RequiredMethods;
+import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
 
-public class LinkedGraph<K extends RequiredMethods, V extends RequiredMethods> implements Graph<K, V> {
+public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<K, V, HashMap<K, HashMap<K, ArrayList<V>>>> {
     private final ArrayList<K> vertices;
     private final HashMap<K, HashMap<K, ArrayList<V>>> edges;
 
@@ -53,10 +53,14 @@ public class LinkedGraph<K extends RequiredMethods, V extends RequiredMethods> i
     }
 
     public void processEdges(EdgeProcessor<K, V> edgeProcessor) {
-        this.edges.forEach((source, edges) -> edges.forEach((destin, values) -> {
+        String start = "=".repeat(40);
+        String end = start.repeat(2) + "=".repeat(14);
+        edges.forEach((source, edges) -> edges.forEach((destin, values) -> {
+            System.out.printf("\n%s[%s para %s]%s\n\n", start, source.showInGraph(), destin.showInGraph(), start);
             for (V value : values) {
                 edgeProcessor.process(source, value, destin);
             }
+            System.out.printf("\n%s\n", end);
         }));
     }
 

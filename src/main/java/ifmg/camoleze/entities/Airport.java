@@ -1,11 +1,11 @@
 package ifmg.camoleze.entities;
 
-import ifmg.camoleze.requirements.RequiredMethods;
+import ifmg.camoleze.requirements.Methods;
 
 import java.util.TimeZone;
 
 
-public class Airport implements RequiredMethods {
+public class Airport implements Methods {
     private String abbreviation;
     private String name;
     private TimeZone timeZone;

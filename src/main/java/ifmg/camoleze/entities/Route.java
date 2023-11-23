@@ -1,9 +1,9 @@
 package ifmg.camoleze.entities;
 
 import ifmg.camoleze.requirements.RequiredAttributes;
-import ifmg.camoleze.requirements.RequiredMethods;
+import ifmg.camoleze.requirements.Methods;
 
-public class Route extends RequiredAttributes implements RequiredMethods {
+public class Route extends RequiredAttributes implements Methods {
     private Integer distance;
 
     public Route(int id, int distance) {
@@ -26,9 +26,6 @@ public class Route extends RequiredAttributes implements RequiredMethods {
 
     @Override
     public String toString() {
-        return "Route{" +
-                "distance=" + distance +
-                ", id=" + id +
-                '}';
+        return "Rota{ id: " + id + " Distancia: " + distance + "km }";
     }
 }

@@ -1,9 +1,9 @@
 package ifmg.camoleze.entities;
 
 import ifmg.camoleze.requirements.RequiredAttributes;
-import ifmg.camoleze.requirements.RequiredMethods;
+import ifmg.camoleze.requirements.Methods;
 
-public class Flight extends RequiredAttributes implements RequiredMethods {
+public class Flight extends RequiredAttributes implements Methods {
     private String airline;
     private String departure;
     private String arrival;
@@ -60,12 +60,11 @@ public class Flight extends RequiredAttributes implements RequiredMethods {
 
     @Override
     public String toString() {
-        return "Flight{" +
-                "airline='" + airline + '\'' +
-                ", departure='" + departure + '\'' +
-                ", arrival='" + arrival + '\'' +
-                ", stops=" + stops +
-                ", id=" + id +
-                '}';
+        return id + "[" +
+                "airline: " + airline +
+                ", departamento: " + departure +
+                ", partida: " + arrival +
+                ", paradas: " + stops +
+                "]";
     }
 }

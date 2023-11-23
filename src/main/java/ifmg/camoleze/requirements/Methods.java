@@ -1,6 +1,6 @@
 package ifmg.camoleze.requirements;
 
-public interface RequiredMethods {
+public interface Methods {
     default String showInGraph() {
         return "";
     }

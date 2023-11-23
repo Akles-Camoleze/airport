@@ -1,16 +1,16 @@
 package ifmg.camoleze.structs.graphs;
 
-import ifmg.camoleze.requirements.RequiredMethods;
+import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
 
-public interface Graph<K extends RequiredMethods, V extends RequiredMethods> {
+public interface Graph<K extends Methods,V extends Methods, U> {
     void addVertex(K vertex);
 
     void addEdge(K source, K destination, V value);
 
     ArrayList<K> getVertices();
 
-    Object getEdges();
+    U getEdges();
 
     void processEdges(EdgeProcessor<K, V> edgeProcessor);
 
