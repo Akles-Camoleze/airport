@@ -1,4 +1,4 @@
-package ifmg.camoleze.structs;
+package ifmg.camoleze.structs.lists;
 
 public interface List<T> {
     void add(T element);

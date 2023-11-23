@@ -1,11 +1,11 @@
-package ifmg.camoleze.structs;
+package ifmg.camoleze.structs.lists;
 
 import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
 public class ArrayList<T> implements List<T>, Iterable<T> {
     private static final int DEFAULT_CAPACITY = 10;
-    private Object[] elements;
+    protected Object[] elements;
     private int size;
 
     public ArrayList() {
