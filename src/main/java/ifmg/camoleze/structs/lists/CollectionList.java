@@ -1,27 +1,23 @@
 package ifmg.camoleze.structs.lists;
 
-import ifmg.camoleze.requirements.RequiredAttributes;
 import ifmg.camoleze.requirements.RequiredMethods;
-import ifmg.camoleze.structs.lists.ArrayList;
 
-public class CollectionList<T extends RequiredMethods> extends RequiredAttributes implements RequiredMethods {
-    private ArrayList<T> collection;
+@SuppressWarnings("unchecked")
+public class CollectionList<T extends RequiredMethods> extends ArrayList<T> implements RequiredMethods {
 
     public CollectionList() {
-        super(1);
-        this.collection = new ArrayList<T>();
+        super();
     }
 
     @Override
     public String showInGraph() {
         StringBuilder buffer = new StringBuilder();
-        for (T element : this.collection) {
+        int i = 0;
+        while (this.elements[i] != null) {
+            T element = (T) this.elements[i++];
             buffer.append(element.showInGraph());
         }
         return buffer.toString();
     }
 
-    public ArrayList<T> getCollection() {
-        return collection;
-    }
 }

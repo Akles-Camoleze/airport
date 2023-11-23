@@ -78,7 +78,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String filePath = "MalhaAereaUSA.csv";
+        String filePath = "teste.csv";
         readFromFile(filePath);
         airNetwork.getFlights().showEdges();
         airNetwork.getRoutes().showEdges();

@@ -17,7 +17,8 @@ public class AirNetwork {
 
     public void addVertex(Airport vertex) {
         this.routes.addVertex(vertex);
-        this.flights.addVertex(vertex);
+        CollectionList<Flight> collection = new CollectionList<>();
+        this.flights.addVertex(vertex, collection);
     }
 
     public ArrayList<Airport> getVertices() {

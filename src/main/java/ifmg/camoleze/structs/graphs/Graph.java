@@ -8,7 +8,7 @@ import ifmg.camoleze.structs.lists.List;
 
 
 @SuppressWarnings("unchecked")
-public class Graph<K extends RequiredMethods, V extends RequiredAttributes & RequiredMethods> {
+public class Graph<K extends RequiredMethods, V extends RequiredMethods> {
     private final ArrayList<K> vertices;
     private final ArrayList<ArrayList<V>> edges;
 
@@ -39,6 +39,29 @@ public class Graph<K extends RequiredMethods, V extends RequiredAttributes & Req
         edges.add(edge);
     }
 
+    public void addVertex(K vertex, V collection) {
+        if (vertices.indexOf(vertex) == -1) {
+            vertices.add(vertex);
+        }
+
+        this.edges.forEach(edge -> edge.add(collection));
+
+        ArrayList<V> edge = new ArrayList<>();
+        for (int i = 0; i < vertices.size(); i++) {
+            edge.add(collection);
+        }
+        edges.add(edge);
+    }
+
+    public void addEdge(K source, K destination, V value) {
+        int sourceIndex = vertices.indexOf(source);
+        int destinationIndex = vertices.indexOf(destination);
+
+        if (sourceIndex == -1 || destinationIndex == -1) return;
+
+        edges.get(sourceIndex).set(destinationIndex, value);
+    }
+
     public void addEdge(K source, K destination, Object value) {
         int sourceIndex = vertices.indexOf(source);
         int destinationIndex = vertices.indexOf(destination);
@@ -47,10 +70,8 @@ public class Graph<K extends RequiredMethods, V extends RequiredAttributes & Req
 
         ArrayList<V> edge = edges.get(sourceIndex);
         if (edge.get(destinationIndex) instanceof CollectionList<?>) {
-            ((CollectionList<V>) edge.get(destinationIndex)).getCollection().set(destinationIndex, (V) value);
-            return;
+            ((CollectionList<V>) edge.get(destinationIndex)).add((V) value);
         }
-        edges.get(sourceIndex).set(destinationIndex, (V) value);
     }
 
     public ArrayList<K> getVertices() {
