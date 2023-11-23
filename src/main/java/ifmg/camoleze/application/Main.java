@@ -4,6 +4,8 @@ import ifmg.camoleze.entities.AirNetwork;
 import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
+import ifmg.camoleze.structs.lists.ArrayList;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -81,6 +83,18 @@ public class Main {
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
 //        airNetwork.getFlights().showEdges();
-        airNetwork.getRoutes().showEdges();
+//        airNetwork.getRoutes().showEdges();
+
+        int phlIndex = airNetwork.getVertices().findIndex(element -> element.getAbbreviation().equals("PHL"));
+        int mspIndex = airNetwork.getVertices().findIndex(element -> element.getAbbreviation().equals("MSP"));
+
+        ArrayList<Airport> path = airNetwork.getRoutes().findPath(phlIndex, mspIndex);
+        StringBuilder pathToPrint = new StringBuilder();
+        for (Airport airport: path) {
+            pathToPrint.append(airport.getAbbreviation());
+            pathToPrint.append("-->");
+        }
+        System.out.println(pathToPrint);
     }
+
 }

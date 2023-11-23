@@ -1,6 +1,7 @@
 package ifmg.camoleze.structs.lists;
 
 import java.util.Iterator;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unchecked")
 public class ArrayList<T> implements List<T>, Iterable<T> {
@@ -71,6 +72,26 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
     public int indexOf(T element) {
         for (int i = 0; i < size; i++) {
             if (elements[i].equals(element)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public T find(Predicate<T> condition) {
+        for (int i = 0; i < size; i++) {
+            if (condition.test((T) elements[i])) {
+                return (T) elements[i];
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int findIndex(Predicate<T> condition) {
+        for (int i = 0; i < size; i++) {
+            if (condition.test((T) elements[i])) {
                 return i;
             }
         }

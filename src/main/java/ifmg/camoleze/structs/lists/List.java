@@ -1,5 +1,7 @@
 package ifmg.camoleze.structs.lists;
 
+import java.util.function.Predicate;
+
 public interface List<T> {
     void add(T element);
 
@@ -18,6 +20,10 @@ public interface List<T> {
     T remove(int index);
 
     int size();
+
+    T find(Predicate<T> condition);
+
+    int findIndex(Predicate<T> condition);
 
     Object[] toArray();
 }

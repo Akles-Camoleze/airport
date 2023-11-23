@@ -2,6 +2,7 @@ package ifmg.camoleze.structs.graphs;
 
 import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
+import ifmg.camoleze.structs.queue.Queue;
 
 
 public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K, V, ArrayList<ArrayList<V>>> {
@@ -76,8 +77,62 @@ public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K
         }
     }
 
-    public void dfs(K source, K destination) {
+    public ArrayList<K> findPath(K start, K end) {
+        int startIndex = vertices.indexOf(start);
+        int endIndex = vertices.indexOf(end);
+        return findPath(startIndex, endIndex);
+    }
 
+    public ArrayList<K> findPath(int startIndex, int endIndex) {
+        boolean[] visited = new boolean[vertices.size()];
+        int[] predecessor = new int[vertices.size()];
+        Queue<K> queue = new Queue<>();
+
+        if (startIndex == -1) {
+            throw new IllegalArgumentException("Vértice inicial não encontrado no grafo.");
+        }
+
+        if (endIndex == -1) {
+            throw new IllegalArgumentException("Vértice final não encontrado no grafo.");
+        }
+
+        queue.enqueue(vertices.get(startIndex));
+        visited[startIndex] = true;
+        predecessor[startIndex] = -1;
+
+        while (!queue.isEmpty()) {
+            K currentVertex = queue.dequeue();
+            int currentIndex = vertices.indexOf(currentVertex);
+
+            for (int i = 0; i < vertices.size(); i++) {
+                if (!visited[i] && edges.get(currentIndex).get(i) != null) {
+                    queue.enqueue(vertices.get(i));
+                    visited[i] = true;
+                    predecessor[i] = currentIndex;
+
+                    if (i == endIndex) {
+                        return buildPath(predecessor, startIndex, endIndex);
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>();
+    }
+
+    private ArrayList<K> buildPath(int[] predecessor, int start, int end) {
+        ArrayList<K> path = new ArrayList<>();
+        int current = end;
+
+        while (current != start) {
+            path.add(0, vertices.get(current));
+            current = predecessor[current];
+        }
+
+        // Adiciona o vértice inicial ao caminho
+        path.add(0, vertices.get(start));
+
+        return path;
     }
 
 }
