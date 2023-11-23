@@ -4,8 +4,6 @@ import ifmg.camoleze.entities.AirNetwork;
 import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
-import ifmg.camoleze.structs.graphs.LinkedGraph;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -82,7 +80,7 @@ public class Main {
     public static void main(String[] args) {
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
-        airNetwork.getFlights().showEdges();
-//        airNetwork.getRoutes().showEdges();
+//        airNetwork.getFlights().showEdges();
+        airNetwork.getRoutes().showEdges();
     }
 }

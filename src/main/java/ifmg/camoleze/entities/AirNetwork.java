@@ -11,8 +11,8 @@ public class AirNetwork {
 
     public AirNetwork() {
         this.vertices = new ArrayList<>();
-        routes = new ArrayGraph<>(this.vertices);
-        flights = new LinkedGraph<>(this.vertices);
+        routes = new ArrayGraph<>(this.vertices, false);
+        flights = new LinkedGraph<>(this.vertices, true);
     }
 
     public void addVertex(Airport vertex) {
