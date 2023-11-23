@@ -20,4 +20,8 @@ public class CollectionList<T extends RequiredMethods> extends ArrayList<T> impl
         return buffer.toString();
     }
 
+    public static <T extends RequiredMethods> CollectionList<T> newInstance() {
+        return new CollectionList<>();
+    }
+
 }

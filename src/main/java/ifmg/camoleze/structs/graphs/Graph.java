@@ -44,11 +44,13 @@ public class Graph<K extends RequiredMethods, V extends RequiredMethods> {
             vertices.add(vertex);
         }
 
-        this.edges.forEach(edge -> edge.add(collection));
+        for (ArrayList<V> edge : this.edges) {
+            edge.add((V) CollectionList.newInstance());
+        }
 
         ArrayList<V> edge = new ArrayList<>();
         for (int i = 0; i < vertices.size(); i++) {
-            edge.add(collection);
+            edge.add((V) CollectionList.newInstance());
         }
         edges.add(edge);
     }
