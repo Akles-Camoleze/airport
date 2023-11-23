@@ -5,7 +5,4 @@ public interface RequiredMethods {
         return "";
     }
 
-    static <T> T newInstance() {
-        return null;
-    }
 }

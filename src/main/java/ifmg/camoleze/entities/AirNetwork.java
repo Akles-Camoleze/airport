@@ -1,35 +1,34 @@
 package ifmg.camoleze.entities;
 
-import ifmg.camoleze.structs.lists.CollectionList;
+import ifmg.camoleze.structs.graphs.LinkedGraph;
 import ifmg.camoleze.structs.lists.ArrayList;
-import ifmg.camoleze.structs.graphs.Graph;
+import ifmg.camoleze.structs.graphs.ArrayGraph;
 
 public class AirNetwork {
     private final ArrayList<Airport> vertices;
-    private final Graph<Airport, Route> routes;
-    private final Graph<Airport, CollectionList<Flight>> flights;
+    private final ArrayGraph<Airport, Route> routes;
+    private final LinkedGraph<Airport, Flight> flights;
 
     public AirNetwork() {
         this.vertices = new ArrayList<>();
-        routes = new Graph<>(this.vertices);
-        flights = new Graph<>(this.vertices);
+        routes = new ArrayGraph<>(this.vertices);
+        flights = new LinkedGraph<>(this.vertices);
     }
 
     public void addVertex(Airport vertex) {
         this.routes.addVertex(vertex);
-        CollectionList<Flight> collection = new CollectionList<>();
-        this.flights.addVertex(vertex, collection);
+        this.flights.addVertex(vertex);
     }
 
     public ArrayList<Airport> getVertices() {
         return vertices;
     }
 
-    public Graph<Airport, Route> getRoutes() {
+    public ArrayGraph<Airport, Route> getRoutes() {
         return routes;
     }
 
-    public Graph<Airport, CollectionList<Flight>> getFlights() {
+    public LinkedGraph<Airport, Flight> getFlights() {
         return flights;
     }
 
