@@ -53,15 +53,11 @@ public class LinkedGraph<K extends RequiredMethods, V extends RequiredMethods> i
     }
 
     public void processEdges(EdgeProcessor<K, V> edgeProcessor) {
-        for (K source : edges.getKeys()) {
-            HashMap<K, ArrayList<V>> sourceEdges = edges.get(source);
-            for (K destination : sourceEdges.getKeys()) {
-                ArrayList<V> values = sourceEdges.get(destination);
-                for (V value : values) {
-                    edgeProcessor.process(source, value, destination);
-                }
+        this.edges.forEach((source, edges) -> edges.forEach((destin, values) -> {
+            for (V value : values) {
+                edgeProcessor.process(source, value, destin);
             }
-        }
+        }));
     }
 
 }

@@ -3,6 +3,7 @@ package ifmg.camoleze.structs.map;
 import ifmg.camoleze.structs.lists.ArrayList;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 @SuppressWarnings("unchecked")
 public class HashMap<K, V> {
@@ -63,6 +64,15 @@ public class HashMap<K, V> {
             }
         }
         return keyList;
+    }
+
+    public void forEach(BiConsumer<K, V> action) {
+        for (Node<K, V> node : table) {
+            while (node != null) {
+                action.accept(node.key, node.value);
+                node = node.next;
+            }
+        }
     }
 
     private void ensureCapacity() {
