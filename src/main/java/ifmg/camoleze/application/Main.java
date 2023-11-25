@@ -4,6 +4,7 @@ import ifmg.camoleze.entities.AirNetwork;
 import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
+import ifmg.camoleze.structs.graphs.EdgeProcessor;
 import ifmg.camoleze.structs.graphs.Vertex;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
@@ -12,6 +13,11 @@ import ifmg.camoleze.utils.TimeConverterUtil;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.OffsetTime;
+import java.time.ZonedDateTime;
+import java.util.TimeZone;
 import java.util.function.Predicate;
 
 public class Main {
@@ -94,8 +100,8 @@ public class Main {
     public static void main(String[] args) {
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
-         airNetwork.getFlights().showEdges();
-         airNetwork.getRoutes().showEdges();
+//         airNetwork.getFlights().showEdges();
+//         airNetwork.getRoutes().showEdges();
 
         Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("SFO"));
 
@@ -103,7 +109,24 @@ public class Main {
         Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
         HashMap<Airport, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
 
-        System.out.println(flights);
+//        System.out.println(flights);
+
+        EdgeProcessor<Airport, Flight> edgeProcessor = ((source, edge, destin) -> {
+            TimeZone sourceTimeZone = source.getTimeZone();
+            TimeZone destinTimeZone = destin.getTimeZone();
+            LocalTime departure = edge.getDeparture();
+            LocalTime arrival = edge.getArrival();
+
+
+            ZonedDateTime zonedDateTime1 = TimeConverterUtil.localTimeToZonedDateTime(departure, sourceTimeZone);
+            ZonedDateTime zonedDateTime2 = TimeConverterUtil.localTimeToZonedDateTime(arrival, destinTimeZone);
+
+            Duration diff = TimeConverterUtil.calculateHourDifference(zonedDateTime1, zonedDateTime2);
+            System.out.printf("Voo %d -> %d:%02d\n", edge.getId(), diff.toHours(), diff.toMinutesPart());
+        });
+
+        airNetwork.getFlights().processEdges(edgeProcessor);
+
     }
 
 }

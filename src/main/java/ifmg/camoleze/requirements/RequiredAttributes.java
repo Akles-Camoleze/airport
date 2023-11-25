@@ -7,5 +7,7 @@ public abstract class RequiredAttributes {
         this.id = id;
     }
 
-
+    public int getId() {
+        return id;
+    }
 }
