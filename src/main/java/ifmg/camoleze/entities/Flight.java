@@ -3,17 +3,19 @@ package ifmg.camoleze.entities;
 import ifmg.camoleze.requirements.RequiredAttributes;
 import ifmg.camoleze.requirements.Methods;
 
+import java.time.LocalTime;
+
 public class Flight extends RequiredAttributes implements Methods {
     private String airline;
-    private String departure;
-    private String arrival;
+    private LocalTime departure;
+    private LocalTime arrival;
     private Integer stops;
 
     public Flight(int id) {
         super(id);
     }
 
-    public Flight(int id, String airline, String departure, String arrival, Integer stops) {
+    public Flight(int id, String airline, LocalTime departure, LocalTime arrival, Integer stops) {
         super(id);
         this.airline = airline;
         this.departure = departure;
@@ -25,11 +27,11 @@ public class Flight extends RequiredAttributes implements Methods {
         return airline;
     }
 
-    public String getDeparture() {
+    public LocalTime getDeparture() {
         return departure;
     }
 
-    public String getArrival() {
+    public LocalTime getArrival() {
         return arrival;
     }
 
@@ -41,11 +43,11 @@ public class Flight extends RequiredAttributes implements Methods {
         this.airline = airline;
     }
 
-    public void setDeparture(String departure) {
+    public void setDeparture(LocalTime departure) {
         this.departure = departure;
     }
 
-    public void setArrival(String arrival) {
+    public void setArrival(LocalTime arrival) {
         this.arrival = arrival;
     }
 
@@ -60,11 +62,11 @@ public class Flight extends RequiredAttributes implements Methods {
 
     @Override
     public String toString() {
-        return id + "[" +
-                "airline: " + airline +
-                ", departamento: " + departure +
-                ", partida: " + arrival +
+        return "(Voo " + id +
+                ", airline: " + airline +
+                ", saida: " + departure +
+                ", chegada: " + arrival +
                 ", paradas: " + stops +
-                "]";
+                ")";
     }
 }

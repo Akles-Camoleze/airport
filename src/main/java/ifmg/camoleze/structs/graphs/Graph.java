@@ -19,7 +19,7 @@ public interface Graph<K extends Methods,V extends Methods, U> {
             String abbrSource = source.toString();
             String abbrDestin = destin.toString();
             String valueToShow = value.toString();
-            System.out.printf("%s-->%s-->%s\n", abbrSource, valueToShow, abbrDestin);
+            System.out.printf("%s----%s---->%s\n", abbrSource, valueToShow, abbrDestin);
         };
         this.processEdges(processor);
     }

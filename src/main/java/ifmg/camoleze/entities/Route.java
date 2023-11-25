@@ -26,6 +26,6 @@ public class Route extends RequiredAttributes implements Methods {
 
     @Override
     public String toString() {
-        return "Rota{ id: " + id + " Distancia: " + distance + "km }";
+        return "(Rota " + id + ", " + distance + " km)";
     }
 }

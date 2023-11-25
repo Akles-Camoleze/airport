@@ -69,13 +69,7 @@ public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<
     }
 
     public HashMap<K, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex, Predicate<ArrayList<V>> predicate) {
-        int index = vertices.indexOf(vertex);
-
-        if (index == -1) {
-            throw new IndexOutOfBoundsException("Indice fora dos limites");
-        }
-
-        return edges.get(vertices.indexOf(vertex)).copy().filterByValue(predicate);
+        return this.getEdgesFromVertex(vertex).copy().filterByValue(predicate);
     }
 
     public void processEdges(EdgeProcessor<K, V> edgeProcessor) {

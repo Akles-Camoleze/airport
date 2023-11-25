@@ -7,6 +7,7 @@ import ifmg.camoleze.entities.Route;
 import ifmg.camoleze.structs.graphs.Vertex;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
+import ifmg.camoleze.utils.TimeConverterUtil;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -31,8 +32,8 @@ public class Main {
                 if (source != null && destin != null) {
                     Flight flight = new Flight(Integer.parseInt(values[1]));
                     flight.setAirline(values[0]);
-                    flight.setDeparture(values[3]);
-                    flight.setArrival(values[5]);
+                    flight.setDeparture(TimeConverterUtil.convertStringToTime(values[3]));
+                    flight.setArrival(TimeConverterUtil.convertStringToTime(values[5]));
                     flight.setStops(Integer.parseInt(values[6]));
                     airNetwork.getFlights().addEdge(source, destin, flight);
                 }
@@ -96,7 +97,7 @@ public class Main {
          airNetwork.getFlights().showEdges();
          airNetwork.getRoutes().showEdges();
 
-        Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("ABQ"));
+        Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("SFO"));
 
         Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
         Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
