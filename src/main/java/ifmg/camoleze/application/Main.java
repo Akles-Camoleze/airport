@@ -6,10 +6,12 @@ import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
 import ifmg.camoleze.structs.graphs.Vertex;
 import ifmg.camoleze.structs.lists.ArrayList;
+import ifmg.camoleze.structs.map.HashMap;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.function.Predicate;
 
 public class Main {
     private static final AirNetwork airNetwork = new AirNetwork();
@@ -91,19 +93,16 @@ public class Main {
     public static void main(String[] args) {
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
-        airNetwork.getFlights().showEdges();
-        airNetwork.getRoutes().showEdges();
+         airNetwork.getFlights().showEdges();
+         airNetwork.getRoutes().showEdges();
 
-        int phlIndex = airNetwork.getVertices().findIndex(element -> element.getData().getAbbreviation().equals("PHL"));
-        int mspIndex = airNetwork.getVertices().findIndex(element -> element.getData().getAbbreviation().equals("MSP"));
+        Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("ABQ"));
 
-        ArrayList<Vertex<Airport>> path = airNetwork.getRoutes().findPath(phlIndex, mspIndex);
-        StringBuilder pathToPrint = new StringBuilder();
-        for (Vertex<Airport> vertex : path) {
-            pathToPrint.append(vertex.getData().getAbbreviation());
-            pathToPrint.append("-->");
-        }
-        System.out.println(pathToPrint);
+        Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
+        Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
+        HashMap<Airport, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
+
+        System.out.println(flights);
     }
 
 }

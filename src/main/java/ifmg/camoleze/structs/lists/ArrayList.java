@@ -89,6 +89,28 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
     }
 
     @Override
+    public ArrayList<T> filter(Predicate<T> condition) {
+        ArrayList<T> arrayList = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            if (condition.test((T) elements[i])) {
+                arrayList.add((T) elements[i]);
+            }
+        }
+        return arrayList;
+    }
+
+    public ArrayList<T> filterReferenced(ArrayList<T> arrayList, Predicate<T> condition) {
+        for (int i = 0; i < size; i++) {
+            if (condition.negate().test((T) elements[i])) {
+                arrayList.remove((T) elements[i]);
+                i--;
+            }
+        }
+
+        return arrayList;
+    }
+
+    @Override
     public int findIndex(Predicate<T> condition) {
         for (int i = 0; i < size; i++) {
             if (condition.test((T) elements[i])) {
@@ -133,6 +155,22 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
             array[i] = elements[i];
         }
         return array;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[\n\t");
+
+        for (int i = 0; i < size; i++) {
+            if (i > 0) {
+                sb.append(",\n\t");
+            }
+            sb.append(elements[i]);
+        }
+
+        sb.append("\n]");
+        return sb.toString();
     }
 
     @Override

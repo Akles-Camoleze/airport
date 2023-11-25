@@ -23,6 +23,8 @@ public interface List<T> {
 
     T find(Predicate<T> condition);
 
+    Object filter(Predicate<T> condition);
+
     int findIndex(Predicate<T> condition);
 
     Object[] toArray();

@@ -16,9 +16,9 @@ public interface Graph<K extends Methods,V extends Methods, U> {
 
     default void showEdges() {
         EdgeProcessor<K, V> processor = (source, value, destin) -> {
-            String abbrSource = source.showInGraph();
-            String abbrDestin = destin.showInGraph();
-            String valueToShow = value.showInGraph();
+            String abbrSource = source.toString();
+            String abbrDestin = destin.toString();
+            String valueToShow = value.toString();
             System.out.printf("%s-->%s-->%s\n", abbrSource, valueToShow, abbrDestin);
         };
         this.processEdges(processor);

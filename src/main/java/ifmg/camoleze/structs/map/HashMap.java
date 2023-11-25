@@ -1,9 +1,9 @@
 package ifmg.camoleze.structs.map;
 
 import ifmg.camoleze.structs.lists.ArrayList;
-
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unchecked")
 public class HashMap<K, V> {
@@ -73,6 +73,44 @@ public class HashMap<K, V> {
                 node = node.next;
             }
         }
+    }
+
+    public HashMap<K, V> filterByValue(Predicate<V> predicate) {
+        HashMap<K, V> result = new HashMap<>();
+
+        this.forEach((key, value) -> {
+            if (predicate.test(value)) {
+                result.put(key, value);
+            }
+        });
+
+        return result;
+    }
+
+    public HashMap<K, V> copy() {
+        HashMap<K, V> copyMap = new HashMap<>();
+
+        this.forEach(copyMap::put);
+
+        return copyMap;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+
+        for (Node<K, V> node : table) {
+            while (node != null) {
+                if (!first) {
+                    sb.append(",\n");
+                }
+                sb.append(node.key).append("=").append(node.value);
+                first = false;
+                node = node.next;
+            }
+        }
+        return sb.toString();
     }
 
     private void ensureCapacity() {

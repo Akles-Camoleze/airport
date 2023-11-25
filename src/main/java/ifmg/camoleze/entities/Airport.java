@@ -69,12 +69,6 @@ public class Airport implements Methods {
 
     @Override
     public String toString() {
-        return "Airport{" +
-                "abbreviation='" + abbreviation + '\'' +
-                ", name='" + name + '\'' +
-                ", timeZone=" + timeZone +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
+        return this.abbreviation;
     }
 }

@@ -4,6 +4,8 @@ import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
 
+import java.util.function.Predicate;
+
 public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<K, V, ArrayList<HashMap<K, ArrayList<V>>>> {
     private final ArrayList<Vertex<K>> vertices;
     private final ArrayList<HashMap<K, ArrayList<V>>> edges;
@@ -54,6 +56,26 @@ public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<
     @Override
     public ArrayList<HashMap<K, ArrayList<V>>> getEdges() {
         return edges;
+    }
+
+    public HashMap<K, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex) {
+        int index = vertices.indexOf(vertex);
+
+        if (index == -1) {
+            throw new IndexOutOfBoundsException("Indice fora dos limites");
+        }
+
+        return edges.get(vertices.indexOf(vertex));
+    }
+
+    public HashMap<K, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex, Predicate<ArrayList<V>> predicate) {
+        int index = vertices.indexOf(vertex);
+
+        if (index == -1) {
+            throw new IndexOutOfBoundsException("Indice fora dos limites");
+        }
+
+        return edges.get(vertices.indexOf(vertex)).copy().filterByValue(predicate);
     }
 
     public void processEdges(EdgeProcessor<K, V> edgeProcessor) {
