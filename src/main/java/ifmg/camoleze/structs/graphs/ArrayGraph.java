@@ -6,7 +6,7 @@ import ifmg.camoleze.structs.queue.Queue;
 
 
 public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K, V, ArrayList<ArrayList<V>>> {
-    private final ArrayList<K> vertices;
+    private final ArrayList<Vertex<K>> vertices;
     private final ArrayList<ArrayList<V>> edges;
     private final boolean targeted;
 
@@ -19,14 +19,14 @@ public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K
     /**
      * Construtor dedicado a grafos com vertices compartilhados.
      */
-    public ArrayGraph(ArrayList<K> vertices, boolean targeted) {
+    public ArrayGraph(ArrayList<Vertex<K>> vertices, boolean targeted) {
         this.vertices = vertices;
         this.edges = new ArrayList<>();
         this.targeted = targeted;
     }
 
     @Override
-    public void addVertex(K vertex) {
+    public void addVertex(Vertex<K> vertex) {
         if (vertices.indexOf(vertex) == -1) {
             vertices.add(vertex);
         }
@@ -41,21 +41,25 @@ public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K
     }
 
     @Override
-    public void addEdge(K source, K destination, V value) {
+    public void addEdge(Vertex<K> source, Vertex<K> destination, V value) {
         int sourceIndex = vertices.indexOf(source);
         int destinationIndex = vertices.indexOf(destination);
 
         if (sourceIndex == -1 || destinationIndex == -1) return;
 
         edges.get(sourceIndex).set(destinationIndex, value);
+        source.setExitDegree(source.getExitDegree() + 1);
+        destination.setEntryDegree(destination.getEntryDegree() + 1);
 
         if (!targeted) {
             edges.get(destinationIndex).set(sourceIndex, value);
+            destination.setExitDegree(destination.getExitDegree() + 1);
+            source.setEntryDegree(source.getEntryDegree() + 1);
         }
     }
 
     @Override
-    public ArrayList<K> getVertices() {
+    public ArrayList<Vertex<K>> getVertices() {
         return vertices;
     }
 
@@ -69,24 +73,24 @@ public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K
         for (int i = 0; i < edges.size(); i++) {
             for (int j = 0; j < edges.get(i).size(); j++) {
                 if (i != j && edges.get(i).get(j) != null) {
-                    K source = vertices.get(i);
-                    K destin = vertices.get(j);
+                    K source = vertices.get(i).getData();
+                    K destin = vertices.get(j).getData();
                     edgeProcessor.process(source, edges.get(i).get(j), destin);
                 }
             }
         }
     }
 
-    public ArrayList<K> findPath(K start, K end) {
+    public ArrayList<Vertex<K>> findPath(Vertex<K> start, Vertex<K> end) {
         int startIndex = vertices.indexOf(start);
         int endIndex = vertices.indexOf(end);
         return findPath(startIndex, endIndex);
     }
 
-    public ArrayList<K> findPath(int startIndex, int endIndex) {
+    public ArrayList<Vertex<K>> findPath(int startIndex, int endIndex) {
         boolean[] visited = new boolean[vertices.size()];
         int[] predecessor = new int[vertices.size()];
-        Queue<K> queue = new Queue<>();
+        Queue<Vertex<K>> queue = new Queue<>();
 
         if (startIndex == -1) {
             throw new IllegalArgumentException("Vértice inicial não encontrado no grafo.");
@@ -101,7 +105,7 @@ public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K
         predecessor[startIndex] = -1;
 
         while (!queue.isEmpty()) {
-            K currentVertex = queue.dequeue();
+            Vertex<K> currentVertex = queue.dequeue();
             int currentIndex = vertices.indexOf(currentVertex);
 
             for (int i = 0; i < vertices.size(); i++) {
@@ -120,8 +124,8 @@ public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K
         return new ArrayList<>();
     }
 
-    private ArrayList<K> buildPath(int[] predecessor, int start, int end) {
-        ArrayList<K> path = new ArrayList<>();
+    private ArrayList<Vertex<K>> buildPath(int[] predecessor, int start, int end) {
+        ArrayList<Vertex<K>> path = new ArrayList<>();
         int current = end;
 
         while (current != start) {
@@ -129,7 +133,6 @@ public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K
             current = predecessor[current];
         }
 
-        // Adiciona o vértice inicial ao caminho
         path.add(0, vertices.get(start));
 
         return path;

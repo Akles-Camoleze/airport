@@ -5,7 +5,7 @@ import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
 
 public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<K, V, HashMap<K, HashMap<K, ArrayList<V>>>> {
-    private final ArrayList<K> vertices;
+    private final ArrayList<Vertex<K>> vertices;
     private final HashMap<K, HashMap<K, ArrayList<V>>> edges;
     private final boolean targeted;
 
@@ -18,30 +18,34 @@ public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<
     /**
      * Construtor dedicado a grafos com vértices compartilhados.
      */
-    public LinkedGraph(ArrayList<K> vertices, boolean targeted) {
+    public LinkedGraph(ArrayList<Vertex<K>> vertices, boolean targeted) {
         this.vertices = vertices;
         this.edges = new HashMap<>();
         this.targeted = targeted;
     }
 
     @Override
-    public void addVertex(K vertex) {
+    public void addVertex(Vertex<K> vertex) {
         if (!vertices.contains(vertex)) {
             vertices.add(vertex);
         }
-        edges.put(vertex, new HashMap<>());
+        edges.put(vertex.getData(), new HashMap<>());
     }
 
     @Override
-    public void addEdge(K source, K destination, V value) {
-        addEdgeHelper(source, destination, value);
+    public void addEdge(Vertex<K> source, Vertex<K> destination, V value) {
+        addEdgeHelper(source.getData(), destination.getData(), value);
+        source.setExitDegree(source.getExitDegree() + 1);
+        destination.setEntryDegree(destination.getEntryDegree() + 1);
         if (!targeted) {
-            addEdgeHelper(destination, source, value);
+            addEdgeHelper(destination.getData(), source.getData(), value);
+            destination.setExitDegree(destination.getExitDegree() + 1);
+            source.setEntryDegree(source.getEntryDegree() + 1);
         }
     }
 
     @Override
-    public ArrayList<K> getVertices() {
+    public ArrayList<Vertex<K>> getVertices() {
         return vertices;
     }
 

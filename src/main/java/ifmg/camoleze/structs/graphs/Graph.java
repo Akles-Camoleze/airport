@@ -4,11 +4,11 @@ import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
 
 public interface Graph<K extends Methods,V extends Methods, U> {
-    void addVertex(K vertex);
+    void addVertex(Vertex<K> vertex);
 
-    void addEdge(K source, K destination, V value);
+    void addEdge(Vertex<K> source, Vertex<K> destination, V value);
 
-    ArrayList<K> getVertices();
+    ArrayList<Vertex<K>> getVertices();
 
     U getEdges();
 

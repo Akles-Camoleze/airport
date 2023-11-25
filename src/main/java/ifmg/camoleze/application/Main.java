@@ -4,6 +4,7 @@ import ifmg.camoleze.entities.AirNetwork;
 import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
+import ifmg.camoleze.structs.graphs.Vertex;
 import ifmg.camoleze.structs.lists.ArrayList;
 
 import java.io.BufferedReader;
@@ -18,8 +19,12 @@ public class Main {
         while ((line = br.readLine()) != null) {
             if (!line.trim().startsWith("#")) {
                 String[] values = line.split(";");
-                Airport source = airNetwork.findVertexByAbbreviation(values[2]);
-                Airport destin = airNetwork.findVertexByAbbreviation(values[4]);
+
+                Vertex<Airport> source = airNetwork.getVertices()
+                        .find(element -> element.getData().getAbbreviation().equals(values[2]));
+
+                Vertex<Airport> destin = airNetwork.getVertices()
+                        .find(element -> element.getData().getAbbreviation().equals(values[4]));
 
                 if (source != null && destin != null) {
                     Flight flight = new Flight(Integer.parseInt(values[1]));
@@ -41,12 +46,16 @@ public class Main {
             if (line.trim().equals("!")) break;
             if (!line.trim().startsWith("#")) {
                 String[] values = line.split(";");
-                Airport source = airNetwork.findVertexByAbbreviation(values[0]);
-                Airport destin = airNetwork.findVertexByAbbreviation(values[1]);
+
+                Vertex<Airport> source = airNetwork.getVertices()
+                        .find(element -> element.getData().getAbbreviation().equals(values[0]));
+
+                Vertex<Airport> destin = airNetwork.getVertices()
+                        .find(element -> element.getData().getAbbreviation().equals(values[1]));
 
                 if (source != null && destin != null) {
-                    double x = Math.pow(destin.getLongitude() - source.getLongitude(), 2);
-                    double y = Math.pow(destin.getLatitude() - source.getLatitude(), 2);
+                    double x = Math.pow(destin.getData().getLongitude() - source.getData().getLongitude(), 2);
+                    double y = Math.pow(destin.getData().getLatitude() - source.getData().getLatitude(), 2);
                     int distance = (int) Math.sqrt(x + y);
                     Route route = new Route(id++, distance);
                     airNetwork.getRoutes().addEdge(source, destin, route);
@@ -75,23 +84,23 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println(airNetwork.getVertices().size());
+            System.out.println(e.getMessage());
         }
     }
 
     public static void main(String[] args) {
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
-//        airNetwork.getFlights().showEdges();
-//        airNetwork.getRoutes().showEdges();
+        airNetwork.getFlights().showEdges();
+        airNetwork.getRoutes().showEdges();
 
-        int phlIndex = airNetwork.getVertices().findIndex(element -> element.getAbbreviation().equals("PHL"));
-        int mspIndex = airNetwork.getVertices().findIndex(element -> element.getAbbreviation().equals("MSP"));
+        int phlIndex = airNetwork.getVertices().findIndex(element -> element.getData().getAbbreviation().equals("PHL"));
+        int mspIndex = airNetwork.getVertices().findIndex(element -> element.getData().getAbbreviation().equals("MSP"));
 
-        ArrayList<Airport> path = airNetwork.getRoutes().findPath(phlIndex, mspIndex);
+        ArrayList<Vertex<Airport>> path = airNetwork.getRoutes().findPath(phlIndex, mspIndex);
         StringBuilder pathToPrint = new StringBuilder();
-        for (Airport airport: path) {
-            pathToPrint.append(airport.getAbbreviation());
+        for (Vertex<Airport> vertex : path) {
+            pathToPrint.append(vertex.getData().getAbbreviation());
             pathToPrint.append("-->");
         }
         System.out.println(pathToPrint);
