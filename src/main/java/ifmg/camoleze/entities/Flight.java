@@ -1,11 +1,9 @@
 package ifmg.camoleze.entities;
 
 import ifmg.camoleze.requirements.RequiredAttributes;
-import ifmg.camoleze.requirements.Methods;
-
 import java.time.LocalTime;
 
-public class Flight extends RequiredAttributes implements Methods {
+public class Flight extends RequiredAttributes {
     private String airline;
     private LocalTime departure;
     private LocalTime arrival;
@@ -53,11 +51,6 @@ public class Flight extends RequiredAttributes implements Methods {
 
     public void setStops(Integer stops) {
         this.stops = stops;
-    }
-
-    @Override
-    public String showInGraph() {
-        return this.toString();
     }
 
     @Override

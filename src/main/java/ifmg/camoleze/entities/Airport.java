@@ -1,11 +1,8 @@
 package ifmg.camoleze.entities;
 
-import ifmg.camoleze.requirements.Methods;
-
 import java.util.TimeZone;
 
-
-public class Airport implements Methods {
+public class Airport {
     private String abbreviation;
     private String name;
     private TimeZone timeZone;
@@ -60,11 +57,6 @@ public class Airport implements Methods {
 
     public Integer getLongitude() {
         return longitude;
-    }
-
-    @Override
-    public String showInGraph() {
-        return this.abbreviation;
     }
 
     @Override

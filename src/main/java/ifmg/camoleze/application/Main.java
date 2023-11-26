@@ -4,6 +4,8 @@ import ifmg.camoleze.entities.AirNetwork;
 import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
+import ifmg.camoleze.structs.graphs.DijkstraAlgorithm;
+import ifmg.camoleze.structs.graphs.DijkstraProcessor;
 import ifmg.camoleze.structs.graphs.EdgeProcessor;
 import ifmg.camoleze.structs.graphs.Vertex;
 import ifmg.camoleze.structs.lists.ArrayList;
@@ -100,32 +102,22 @@ public class Main {
     public static void main(String[] args) {
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
-//         airNetwork.getFlights().showEdges();
-//         airNetwork.getRoutes().showEdges();
+//        airNetwork.getFlights().showEdges();
+//        airNetwork.getRoutes().showEdges();
 
-        Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("SFO"));
+        Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("ABQ"));
 
-        Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
-        Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
-        HashMap<Airport, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
-
+//        Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
+//        Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
+//        HashMap<Airport, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
+//
 //        System.out.println(flights);
+//
+//        airNetwork.calculateAllFlightsDuration();
 
-        EdgeProcessor<Airport, Flight> edgeProcessor = ((source, edge, destin) -> {
-            TimeZone sourceTimeZone = source.getTimeZone();
-            TimeZone destinTimeZone = destin.getTimeZone();
-            LocalTime departure = edge.getDeparture();
-            LocalTime arrival = edge.getArrival();
-
-
-            ZonedDateTime zonedDateTime1 = TimeConverterUtil.localTimeToZonedDateTime(departure, sourceTimeZone);
-            ZonedDateTime zonedDateTime2 = TimeConverterUtil.localTimeToZonedDateTime(arrival, destinTimeZone);
-
-            Duration diff = TimeConverterUtil.calculateHourDifference(zonedDateTime1, zonedDateTime2);
-            System.out.printf("Voo %d -> %d:%02d\n", edge.getId(), diff.toHours(), diff.toMinutesPart());
-        });
-
-        airNetwork.getFlights().processEdges(edgeProcessor);
+        DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(airNetwork.getRoutes());
+        DijkstraProcessor<Route> processor = Route::getDistance;
+        System.out.println(dijkstraAlgorithm.dijkstra(abq, processor));
 
     }
 

@@ -1,12 +1,11 @@
 package ifmg.camoleze.structs.graphs;
 
-import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
 
 import java.util.function.Predicate;
 
-public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<K, V, ArrayList<HashMap<K, ArrayList<V>>>> {
+public class LinkedGraph<K, V> implements Graph<K, V, HashMap<K, ArrayList<V>>> {
     private final ArrayList<Vertex<K>> vertices;
     private final ArrayList<HashMap<K, ArrayList<V>>> edges;
     private final boolean targeted;
@@ -58,6 +57,7 @@ public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<
         return edges;
     }
 
+    @Override
     public HashMap<K, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex) {
         int index = vertices.indexOf(vertex);
 
@@ -80,7 +80,7 @@ public class LinkedGraph<K extends Methods, V extends Methods> implements Graph<
             HashMap<K, ArrayList<V>> sourceEdges = edges.get(i);
 
             sourceEdges.forEach( (destin, values) -> {
-                System.out.printf("\n%s[%s para %s]%s\n\n", start, source.showInGraph(), destin.showInGraph(), start);
+                System.out.printf("\n%s[%s para %s]%s\n\n", start, source.toString(), destin.toString(), start);
                 for (V value : values) {
                     edgeProcessor.process(source, value, destin);
                 }

@@ -1,11 +1,11 @@
 package ifmg.camoleze.structs.graphs;
 
-import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
+import ifmg.camoleze.structs.map.HashMap;
 import ifmg.camoleze.structs.queue.Queue;
 
 
-public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K, V, ArrayList<ArrayList<V>>> {
+public class ArrayGraph<K, V> implements Graph<K, V, ArrayList<V>> {
     private final ArrayList<Vertex<K>> vertices;
     private final ArrayList<ArrayList<V>> edges;
     private final boolean targeted;
@@ -66,6 +66,17 @@ public class ArrayGraph<K extends Methods, V extends Methods> implements Graph<K
     @Override
     public ArrayList<ArrayList<V>> getEdges() {
         return edges;
+    }
+
+    @Override
+    public ArrayList<V> getEdgesFromVertex(Vertex<K> vertex) {
+        int index = vertices.indexOf(vertex);
+
+        if (index == -1) {
+            throw new IndexOutOfBoundsException("Indice fora dos limites");
+        }
+
+        return edges.get(vertices.indexOf(vertex));
     }
 
     @Override

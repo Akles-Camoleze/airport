@@ -1,6 +1,7 @@
 package ifmg.camoleze.structs.map;
 
 import ifmg.camoleze.structs.lists.ArrayList;
+
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -41,6 +42,15 @@ public class HashMap<K, V> {
             }
         }
         size++;
+    }
+
+    public void update(K key, V value, int indexValue) {
+        int index = getIndex(key), i = 0;
+        Node<K, V> current = table[index];
+        while (current.next != null && i != indexValue) {
+            current = current.next;
+        }
+        current.value = value;
     }
 
     public V get(K key) {
