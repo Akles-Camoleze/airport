@@ -2,10 +2,8 @@ package ifmg.camoleze.structs.graphs;
 
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
-//import ifmg.camoleze.structs.queue.PriorityQueue;
-import java.util.PriorityQueue;
+import ifmg.camoleze.structs.queue.PriorityQueue;
 
-@SuppressWarnings("unchecked")
 public class DijkstraAlgorithm<K, V> {
     private final Graph<K, V, ArrayList<V>> graph;
 
@@ -13,23 +11,20 @@ public class DijkstraAlgorithm<K, V> {
         this.graph = graph;
     }
 
-    public ArrayList<VertexDistancePair<K>> dijkstra(Vertex<K> start, DijkstraProcessor<V> processor) {
-        Object[] vertices = graph.getVertices().toArray();
+    public HashMap<Vertex<K>, Integer> dijkstra(Vertex<K> start, DijkstraProcessor<V> processor) {
+        ArrayList<Vertex<K>> vertices = graph.getVertices();
         PriorityQueue<VertexDistancePair<K>> queue = new PriorityQueue<>();
-        ArrayList<VertexDistancePair<K>> distances = new ArrayList<>();
+        HashMap<Vertex<K>, Integer> distances = new HashMap<>();
 
         for (Vertex<K> vertex : graph.getVertices()) {
-            if (vertex.equals(start)) {
-                distances.add(new VertexDistancePair<>(vertex, 0));
-                queue.add(new VertexDistancePair<>(start, 0));
-            } else {
-                distances.add(new VertexDistancePair<>(vertex, Integer.MAX_VALUE));
-            }
+            distances.put(vertex, Integer.MAX_VALUE);
         }
+
+        distances.put(start, 0);
+        queue.add(new VertexDistancePair<>(start, 0));
 
         while (!queue.isEmpty()) {
             VertexDistancePair<K> current = queue.poll();
-            int index = distances.findIndex(element -> element.equals(current));
             ArrayList<V> edges = graph.getEdgesFromVertex(current.vertex);
 
             for (int i = 0; i < edges.size(); i++) {
@@ -37,10 +32,10 @@ public class DijkstraAlgorithm<K, V> {
 
                 if (edge == null) continue;
 
-                int newDistance = distances.get(index).distance + processor.greedyChoice(edge);
-                Vertex<K> destin = (Vertex<K>) vertices[i];
-                if (newDistance < distances.get(i).distance) {
-                    distances.set(i, new VertexDistancePair<>(destin, newDistance));
+                int newDistance = distances.get(current.vertex) + processor.greedyChoice(edge);
+                Vertex<K> destin = vertices.get(i);
+                if (newDistance < distances.get(destin)) {
+                    distances.put(destin, newDistance);
                     queue.add(new VertexDistancePair<>(destin, newDistance));
                 }
             }
@@ -49,7 +44,7 @@ public class DijkstraAlgorithm<K, V> {
         return distances;
     }
 
-    public record VertexDistancePair<K>(Vertex<K> vertex, int distance) implements Comparable<VertexDistancePair<K>> {
+    private record VertexDistancePair<K>(Vertex<K> vertex, int distance) implements Comparable<VertexDistancePair<K>> {
         @Override
         public int compareTo(VertexDistancePair<K> other) {
             return Integer.compare(this.distance, other.distance);
