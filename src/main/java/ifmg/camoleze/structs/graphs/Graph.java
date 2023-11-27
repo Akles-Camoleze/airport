@@ -16,12 +16,8 @@ public interface Graph<K, V, U> {
     void processEdges(EdgeProcessor<K, V> edgeProcessor);
 
     default void showEdges() {
-        EdgeProcessor<K, V> processor = (source, value, destin) -> {
-            String abbrSource = source.toString();
-            String abbrDestin = destin.toString();
-            String valueToShow = value.toString();
-            System.out.printf("%s----%s---->%s\n", abbrSource, valueToShow, abbrDestin);
-        };
+        EdgeProcessor<K, V> processor = (source, value, destin) ->
+                System.out.printf("%s----%s---->%s\n", source, value, destin);
         this.processEdges(processor);
     }
 }

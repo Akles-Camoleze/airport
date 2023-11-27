@@ -25,6 +25,10 @@ public class DijkstraAlgorithm<K, V> {
     }
 
     public HashMap<Vertex<K>, DijkstraResult<K>> dijkstra(Vertex<K> start, Vertex<K> destination) {
+        if (start == null) {
+            throw new RuntimeException("Vertice inválido");
+        }
+
         initializeResults(start);
         results.get(start).path().add(start);
         queue.enqueue(new VertexDistancePair<>(start, BigDecimal.ZERO));

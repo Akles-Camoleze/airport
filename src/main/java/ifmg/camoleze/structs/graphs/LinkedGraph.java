@@ -2,12 +2,11 @@ package ifmg.camoleze.structs.graphs;
 
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
-
 import java.util.function.Predicate;
 
-public class LinkedGraph<K, V> implements Graph<K, V, HashMap<K, ArrayList<V>>> {
+public class LinkedGraph<K, V> implements Graph<K, V, HashMap<Vertex<K>, ArrayList<V>>> {
     private final ArrayList<Vertex<K>> vertices;
-    private final ArrayList<HashMap<K, ArrayList<V>>> edges;
+    private final ArrayList<HashMap<Vertex<K>, ArrayList<V>>> edges;
     private final boolean targeted;
 
     public LinkedGraph(boolean targeted) {
@@ -53,12 +52,12 @@ public class LinkedGraph<K, V> implements Graph<K, V, HashMap<K, ArrayList<V>>> 
     }
 
     @Override
-    public ArrayList<HashMap<K, ArrayList<V>>> getEdges() {
+    public ArrayList<HashMap<Vertex<K>, ArrayList<V>>> getEdges() {
         return edges;
     }
 
     @Override
-    public HashMap<K, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex) {
+    public HashMap<Vertex<K>, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex) {
         int index = vertices.indexOf(vertex);
 
         if (index == -1) {
@@ -68,7 +67,7 @@ public class LinkedGraph<K, V> implements Graph<K, V, HashMap<K, ArrayList<V>>> 
         return edges.get(vertices.indexOf(vertex));
     }
 
-    public HashMap<K, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex, Predicate<ArrayList<V>> predicate) {
+    public HashMap<Vertex<K>, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex, Predicate<ArrayList<V>> predicate) {
         return this.getEdgesFromVertex(vertex).copy().filterByValue(predicate);
     }
 
@@ -77,12 +76,12 @@ public class LinkedGraph<K, V> implements Graph<K, V, HashMap<K, ArrayList<V>>> 
         String end = start.repeat(2) + "=".repeat(14);
         for (int i = 0; i < edges.size(); i++) {
             K source = vertices.get(i).getData();
-            HashMap<K, ArrayList<V>> sourceEdges = edges.get(i);
+            HashMap<Vertex<K>, ArrayList<V>> sourceEdges = edges.get(i);
 
             sourceEdges.forEach( (destin, values) -> {
-                System.out.printf("\n%s[%s para %s]%s\n\n", start, source.toString(), destin.toString(), start);
+                System.out.printf("\n%s[%s para %s]%s\n\n", start, source, destin.getData(), start);
                 for (V value : values) {
-                    edgeProcessor.process(source, value, destin);
+                    edgeProcessor.process(source, value, destin.getData());
                 }
                 System.out.printf("\n%s\n", end);
             });
@@ -91,16 +90,16 @@ public class LinkedGraph<K, V> implements Graph<K, V, HashMap<K, ArrayList<V>>> 
 
 
     private void addEdgeHelper(Vertex<K> source, Vertex<K> destination, V value) {
-        HashMap<K, ArrayList<V>> sourceEdges = edges.get(vertices.indexOf(source));
+        HashMap<Vertex<K>, ArrayList<V>> sourceEdges = edges.get(vertices.indexOf(source));
         if (sourceEdges == null) {
             sourceEdges = new HashMap<>();
             edges.add(sourceEdges);
         }
 
-        ArrayList<V> values = sourceEdges.get(destination.getData());
+        ArrayList<V> values = sourceEdges.get(destination);
         if (values == null) {
             values = new ArrayList<>();
-            sourceEdges.put(destination.getData(), values);
+            sourceEdges.put(destination, values);
         }
 
         values.add(value);

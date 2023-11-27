@@ -92,8 +92,6 @@ public class Main {
             readAirportsFromFile(br);
             readRoutesFromFile(br);
             readFlightsFromFile(br);
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -108,11 +106,11 @@ public class Main {
         airNetwork.getRoutes().showEdges();
 
         Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("ABQ"));
-        Vertex<Airport> phl = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("PHL"));
+        Vertex<Airport> atl = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("RDU"));
 
         Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
         Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
-        HashMap<Airport, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
+        HashMap<Vertex<Airport>, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
 
         System.out.println(flights);
 
@@ -120,7 +118,13 @@ public class Main {
 
         DijkstraProcessor<Route> processor = Route::getDistance;
         DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(airNetwork.getRoutes(), processor);
-        System.out.println(dijkstraAlgorithm.dijkstra(abq, phl));
+
+        try {
+            System.out.println(dijkstraAlgorithm.dijkstra(abq, atl));
+            System.out.println(airNetwork.getFastedFlight(abq, atl));
+        } catch (RuntimeException exception) {
+            System.out.println(exception.getMessage());
+        }
 
     }
 
