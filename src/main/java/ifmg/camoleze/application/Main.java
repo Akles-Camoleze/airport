@@ -17,14 +17,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.OffsetTime;
-import java.time.ZonedDateTime;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.function.Predicate;
+
 
 public class Main {
     private static final AirNetwork airNetwork = new AirNetwork();
@@ -109,22 +104,23 @@ public class Main {
 
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
-//        airNetwork.getFlights().showEdges();
-//        airNetwork.getRoutes().showEdges();
+        airNetwork.getFlights().showEdges();
+        airNetwork.getRoutes().showEdges();
 
         Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("ABQ"));
+        Vertex<Airport> phl = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("PHL"));
 
-//        Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
-//        Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
-//        HashMap<Airport, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
-//
-//        System.out.println(flights);
-//
-//        airNetwork.calculateAllFlightsDuration();
+        Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
+        Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
+        HashMap<Airport, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
 
-        DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(airNetwork.getRoutes());
+        System.out.println(flights);
+
+        airNetwork.calculateAllFlightsDuration();
+
         DijkstraProcessor<Route> processor = Route::getDistance;
-        System.out.println(dijkstraAlgorithm.dijkstra(abq, processor));
+        DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(airNetwork.getRoutes(), processor);
+        System.out.println(dijkstraAlgorithm.dijkstra(abq, phl));
 
     }
 

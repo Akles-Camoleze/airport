@@ -40,9 +40,6 @@ public class Vertex<T> {
 
     @Override
     public String toString() {
-        return "Vertex{" +
-                "data=" + data +
-                ", degree=" + entryDegree +
-                '}';
+        return "(" + data + ", Conexões: " + entryDegree + ')';
     }
 }

@@ -99,6 +99,16 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
         return arrayList;
     }
 
+    public ArrayList<T> copy() {
+        ArrayList<T> copyList = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            copyList.add((T) elements[i]);
+        }
+
+        return copyList;
+    }
+
     public ArrayList<T> filterReferenced(ArrayList<T> arrayList, Predicate<T> condition) {
         for (int i = 0; i < size; i++) {
             if (condition.negate().test((T) elements[i])) {
