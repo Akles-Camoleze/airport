@@ -1,8 +1,7 @@
 package ifmg.camoleze.structs.graphs;
 
 import ifmg.camoleze.structs.lists.ArrayList;
-import ifmg.camoleze.structs.map.HashMap;
-import ifmg.camoleze.structs.queue.Queue;
+import ifmg.camoleze.structs.queue.LinkedQueue;
 
 
 public class ArrayGraph<K, V> implements Graph<K, V, ArrayList<V>> {
@@ -73,7 +72,7 @@ public class ArrayGraph<K, V> implements Graph<K, V, ArrayList<V>> {
         int index = vertices.indexOf(vertex);
 
         if (index == -1) {
-            throw new IndexOutOfBoundsException("Indice fora dos limites");
+            throw new IndexOutOfBoundsException("Vertice não encontrado");
         }
 
         return edges.get(vertices.indexOf(vertex));
@@ -101,7 +100,7 @@ public class ArrayGraph<K, V> implements Graph<K, V, ArrayList<V>> {
     public ArrayList<Vertex<K>> findPath(int startIndex, int endIndex) {
         boolean[] visited = new boolean[vertices.size()];
         int[] predecessor = new int[vertices.size()];
-        Queue<Vertex<K>> queue = new Queue<>();
+        LinkedQueue<Vertex<K>> linkedQueue = new LinkedQueue<>();
 
         if (startIndex == -1) {
             throw new IllegalArgumentException("Vértice inicial não encontrado no grafo.");
@@ -111,17 +110,17 @@ public class ArrayGraph<K, V> implements Graph<K, V, ArrayList<V>> {
             throw new IllegalArgumentException("Vértice final não encontrado no grafo.");
         }
 
-        queue.enqueue(vertices.get(startIndex));
+        linkedQueue.enqueue(vertices.get(startIndex));
         visited[startIndex] = true;
         predecessor[startIndex] = -1;
 
-        while (!queue.isEmpty()) {
-            Vertex<K> currentVertex = queue.dequeue();
+        while (!linkedQueue.isEmpty()) {
+            Vertex<K> currentVertex = linkedQueue.dequeue();
             int currentIndex = vertices.indexOf(currentVertex);
 
             for (int i = 0; i < vertices.size(); i++) {
                 if (!visited[i] && edges.get(currentIndex).get(i) != null) {
-                    queue.enqueue(vertices.get(i));
+                    linkedQueue.enqueue(vertices.get(i));
                     visited[i] = true;
                     predecessor[i] = currentIndex;
 

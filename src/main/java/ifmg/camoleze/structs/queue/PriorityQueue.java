@@ -4,66 +4,76 @@ import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.lists.List;
 
 
-public class PriorityQueue<T extends Comparable<T>> {
+public class PriorityQueue<T extends Comparable<T>> implements Queue<T> {
     private final List<T> elements = new ArrayList<>();
 
     public PriorityQueue() {
     }
 
-    public void add(T element) {
+    public void enqueue(T element) {
         elements.add(element);
-        mergeSort(0, elements.size() - 1);
+        heapifyUp();
     }
 
-    public T poll() {
+    public T dequeue() {
         if (isEmpty()) {
             return null;
         }
-        return elements.remove(0);
+
+        T top = elements.get(0);
+        int lastIndex = elements.size() - 1;
+        elements.set(0, elements.get(lastIndex));
+        elements.remove(lastIndex);
+        heapifyDown();
+        return top;
     }
 
     public boolean isEmpty() {
         return elements.size() == 0;
     }
 
-    private void mergeSort(int left, int right) {
-        if (left < right) {
-            int mid = left + (right - left) / 2;
-
-            mergeSort(left, mid);
-            mergeSort(mid + 1, right);
-
-            merge(left, mid, right);
+    private void heapifyUp() {
+        int currentIndex = elements.size() - 1;
+        while (currentIndex > 0) {
+            int parentIndex = (currentIndex - 1) / 2;
+            if (elements.get(currentIndex).compareTo(elements.get(parentIndex)) > 0) {
+                swap(currentIndex, parentIndex);
+                currentIndex = parentIndex;
+            } else {
+                break;
+            }
         }
     }
 
-    private void merge(int left, int mid, int right) {
-        List<T> temp = new ArrayList<>();
-        int i = left;
-        int j = mid + 1;
+    private void heapifyDown() {
+        int currentIndex = 0;
+        int lastIndex = elements.size() - 1;
 
-        while (i <= mid && j <= right) {
-            if (elements.get(i).compareTo(elements.get(j)) < 0) {
-                temp.add(elements.get(i));
-                i++;
+        while (true) {
+            int leftChildIndex = 2 * currentIndex + 1;
+            int rightChildIndex = 2 * currentIndex + 2;
+            int maxIndex = currentIndex;
+
+            if (leftChildIndex <= lastIndex && elements.get(leftChildIndex).compareTo(elements.get(maxIndex)) > 0) {
+                maxIndex = leftChildIndex;
+            }
+
+            if (rightChildIndex <= lastIndex && elements.get(rightChildIndex).compareTo(elements.get(maxIndex)) > 0) {
+                maxIndex = rightChildIndex;
+            }
+
+            if (maxIndex != currentIndex) {
+                swap(currentIndex, maxIndex);
+                currentIndex = maxIndex;
             } else {
-                temp.add(elements.get(j));
-                j++;
+                break;
             }
         }
+    }
 
-        while (i <= mid) {
-            temp.add(elements.get(i));
-            i++;
-        }
-
-        while (j <= right) {
-            temp.add(elements.get(j));
-            j++;
-        }
-
-        for (int k = 0; k < temp.size(); k++) {
-            elements.set(left + k, temp.get(k));
-        }
+    private void swap(int i, int j) {
+        T temp = elements.get(i);
+        elements.set(i, elements.get(j));
+        elements.set(j, temp);
     }
 }

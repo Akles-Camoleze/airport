@@ -21,10 +21,10 @@ public class DijkstraAlgorithm<K, V> {
         }
 
         distances.put(start, 0);
-        queue.add(new VertexDistancePair<>(start, 0));
+        queue.enqueue(new VertexDistancePair<>(start, 0));
 
         while (!queue.isEmpty()) {
-            VertexDistancePair<K> current = queue.poll();
+            VertexDistancePair<K> current = queue.dequeue();
             ArrayList<V> edges = graph.getEdgesFromVertex(current.vertex);
 
             for (int i = 0; i < edges.size(); i++) {
@@ -36,7 +36,7 @@ public class DijkstraAlgorithm<K, V> {
                 Vertex<K> destin = vertices.get(i);
                 if (newDistance < distances.get(destin)) {
                     distances.put(destin, newDistance);
-                    queue.add(new VertexDistancePair<>(destin, newDistance));
+                    queue.enqueue(new VertexDistancePair<>(destin, newDistance));
                 }
             }
         }
