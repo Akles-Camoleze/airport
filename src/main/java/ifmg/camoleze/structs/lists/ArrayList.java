@@ -169,6 +169,8 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 
     @Override
     public String toString() {
+        if (size == 0) return "";
+
         StringBuilder sb = new StringBuilder();
         sb.append("[\n\t");
 

@@ -7,9 +7,11 @@ import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.graphs.ArrayGraph;
 import ifmg.camoleze.structs.map.HashMap;
 import ifmg.camoleze.utils.TimeConverterUtil;
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class AirNetwork {
@@ -52,18 +54,15 @@ public class AirNetwork {
         Airport source = sourceVertex.getData();
         Airport destin = destinVertex.getData();
 
-        if (flightsForDestin == null) {
+        if (flightsForDestin == null || flightsForDestin.size() == 0) {
             throw new RuntimeException("Não foram encontrados voos de " + source + " para " + destin);
         }
 
-        Flight fasterFlight = flightsForDestin.get(0);
-        Duration smallerDuration = flightsDurationCalculator(source, fasterFlight, destin);
-        FlightDurationPair flightDurationPair = new FlightDurationPair(fasterFlight, smallerDuration);
+        FlightDurationPair flightDurationPair = null;
 
-        for (int i = 1; i < flightsForDestin.size(); i++) {
-            Flight flight = flightsForDestin.get(i);
-            Duration duration = flightsDurationCalculator(source, flight, destin);
-            if (duration.compareTo(smallerDuration) < 0) {
+        for (Flight flight : flightsForDestin) {
+            Duration duration = flight.getDuration(source.getTimeZone(), destin.getTimeZone());
+            if (flightDurationPair == null || duration.compareTo(flightDurationPair.duration) < 0) {
                 flightDurationPair = new FlightDurationPair(flight, duration);
             }
         }
@@ -76,21 +75,10 @@ public class AirNetwork {
         this.flights.processEdges(edgeProcessor);
     }
 
-    private static Duration flightsDurationCalculator(Airport source, Flight edge, Airport destin) {
-        TimeZone sourceTimeZone = source.getTimeZone();
-        TimeZone destinTimeZone = destin.getTimeZone();
-        LocalTime departure = edge.getDeparture();
-        LocalTime arrival = edge.getArrival();
-
-        ZonedDateTime zonedDateTime1 = TimeConverterUtil.localTimeToZonedDateTime(departure, sourceTimeZone);
-        ZonedDateTime zonedDateTime2 = TimeConverterUtil.localTimeToZonedDateTime(arrival, destinTimeZone);
-
-        return TimeConverterUtil.calculateHourDifference(zonedDateTime1, zonedDateTime2);
-    }
-
-    private static void showDurations(Airport source, Flight edge, Airport destin) {
-        Duration duration = flightsDurationCalculator(source, edge, destin);
-        System.out.printf("Voo %d -> %d:%02d\n", edge.getId(), duration.toHours(), duration.toMinutesPart());
+    private static void showDurations(Airport source, Flight flight, Airport destin) {
+        Duration duration = flight.getDuration(source.getTimeZone(), destin.getTimeZone());
+        FlightDurationPair flightDurationPair = new FlightDurationPair(flight, duration);
+        System.out.println(flightDurationPair);
     }
 
     public record FlightDurationPair(Flight flight, Duration duration) {

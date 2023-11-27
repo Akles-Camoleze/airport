@@ -106,7 +106,7 @@ public class Main {
         airNetwork.getRoutes().showEdges();
 
         Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("ABQ"));
-        Vertex<Airport> atl = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("RDU"));
+        Vertex<Airport> atl = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("SFO"));
 
         Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
         Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
@@ -122,6 +122,7 @@ public class Main {
         try {
             System.out.println(dijkstraAlgorithm.dijkstra(abq, atl));
             System.out.println(airNetwork.getFastedFlight(abq, atl));
+            System.out.println(airNetwork.getRoutes().findPath(abq, abq));
         } catch (RuntimeException exception) {
             System.out.println(exception.getMessage());
         }
