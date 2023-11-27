@@ -2,19 +2,21 @@ package ifmg.camoleze.entities;
 
 import ifmg.camoleze.requirements.RequiredAttributes;
 
-public class Route extends RequiredAttributes {
-    private Integer distance;
+import java.math.BigDecimal;
 
-    public Route(int id, int distance) {
+public class Route extends RequiredAttributes {
+    private BigDecimal distance;
+
+    public Route(int id, BigDecimal distance) {
         super(id);
         this.distance = distance;
     }
 
-    public Integer getDistance() {
+    public BigDecimal getDistance() {
         return distance;
     }
 
-    public void setDistance(Integer distance) {
+    public void setDistance(BigDecimal distance) {
         this.distance = distance;
     }
 

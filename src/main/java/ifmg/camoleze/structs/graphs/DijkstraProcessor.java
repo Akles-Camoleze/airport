@@ -1,6 +1,8 @@
 package ifmg.camoleze.structs.graphs;
 
+import java.math.BigDecimal;
+
 @FunctionalInterface
 public interface DijkstraProcessor<V> {
-    Integer greedyChoice(V currEdge);
+    BigDecimal greedyChoice(V currEdge);
 }

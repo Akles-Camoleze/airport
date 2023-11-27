@@ -15,10 +15,14 @@ import ifmg.camoleze.utils.TimeConverterUtil;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.OffsetTime;
 import java.time.ZonedDateTime;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.function.Predicate;
 
@@ -67,7 +71,8 @@ public class Main {
                 if (source != null && destin != null) {
                     double x = Math.pow(destin.getData().getLongitude() - source.getData().getLongitude(), 2);
                     double y = Math.pow(destin.getData().getLatitude() - source.getData().getLatitude(), 2);
-                    int distance = (int) Math.sqrt(x + y);
+                    BigDecimal distance = BigDecimal.valueOf(Math.sqrt(x + y));
+                    distance = distance.setScale(2, RoundingMode.HALF_UP);
                     Route route = new Route(id++, distance);
                     airNetwork.getRoutes().addEdge(source, destin, route);
                 }
@@ -100,6 +105,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        Locale.setDefault(Locale.US);
+
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
 //        airNetwork.getFlights().showEdges();
