@@ -18,8 +18,7 @@ public interface Graph<K, V, U> {
     void processEdges(EdgeProcessor<K, V> edgeProcessor);
 
     default void showEdges() {
-        EdgeProcessor<K, V> processor = (source, value, destin) ->
-                System.out.printf("%s----%s---->%s\n", source, value, destin);
+        EdgeProcessor<K, V> processor = (k1, v, k2) -> System.out.printf("%s----%s---->%s\n", k1, v, k2);
         this.processEdges(processor);
     }
 }

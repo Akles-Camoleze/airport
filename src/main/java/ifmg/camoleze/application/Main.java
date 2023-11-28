@@ -95,31 +95,34 @@ public class Main {
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
-
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
-        airNetwork.getFlights().showEdges();
-        airNetwork.getRoutes().showEdges();
 
-        Vertex<Airport> abq = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("ABQ"));
-        Vertex<Airport> atl = airNetwork.getVertices().find(element -> element.getData().getAbbreviation().equals("SFO"));
+        LinkedGraph<Airport, Flight> flightLinkedGraph = airNetwork.getFlights();
+        ArrayGraph<Airport, Route> routeArrayGraph = airNetwork.getRoutes();
+        ArrayList<Vertex<Airport>> vertices = airNetwork.getVertices();
+        flightLinkedGraph.showEdges();
+        routeArrayGraph.showEdges();
+
+        Vertex<Airport> source = vertices.find(element -> element.getData().getAbbreviation().equals("ABQ"));
+        Vertex<Airport> destin = vertices.find(element -> element.getData().getAbbreviation().equals("SFO"));
 
         Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
         Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
-        HashMap<Vertex<Airport>, ArrayList<Flight>> flights = airNetwork.getFlights().getEdgesFromVertex(abq, predicate);
+        HashMap<Vertex<Airport>, ArrayList<Flight>> flights = flightLinkedGraph.getEdgesFromVertex(source, predicate);
 
         System.out.println(flights);
 
         airNetwork.calculateAllFlightsDuration();
 
         DijkstraProcessor<Route> processor = Route::getDistance;
-        DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(airNetwork.getRoutes(), processor);
+        DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(routeArrayGraph, processor);
 
         try {
-            System.out.println(dijkstraAlgorithm.dijkstra(abq, atl));
-            System.out.println(airNetwork.getFastedFlight(abq, atl));
-            HamiltonianCircuit<Airport, Route, ArrayList<Route>> hamiltonianCircuit = new HamiltonianCircuit<>(airNetwork.getRoutes());
-            System.out.println(hamiltonianCircuit.findHamiltonianCircuit(abq));
+            System.out.println(dijkstraAlgorithm.dijkstra(source, destin));
+            System.out.println(airNetwork.getFastedFlight(source, destin));
+            HamiltonianCircuit<Airport, Route, ArrayList<Route>> circuit = new HamiltonianCircuit<>(routeArrayGraph);
+            System.out.println(circuit.findHamiltonianCircuit(source));
         } catch (RuntimeException exception) {
             System.out.println(exception.getMessage());
         }
