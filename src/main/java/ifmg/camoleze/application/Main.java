@@ -121,7 +121,7 @@ public class Main {
             DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(routeArrayGraph, processor);
 
             CriticalVertexAlgorithm<Airport, Route> algorithm = new CriticalVertexAlgorithm<>(dijkstraAlgorithm);
-            CriticalVertexAlgorithm.AirportResult<Airport> result = algorithm.findCriticalAirports(source, destin);
+            ArrayList<CriticalVertexAlgorithm.VertexResult<Airport>> result = algorithm.findCriticalAirports(source);
 
             HamiltonianCircuit<Airport, Route, ArrayList<Route>> circuit = new HamiltonianCircuit<>(routeArrayGraph);
 
