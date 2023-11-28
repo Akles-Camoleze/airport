@@ -102,8 +102,6 @@ public class Menu {
                 try {
                     System.out.print("Origem -> ");
                     Vertex<Airport> source = getVertex(sc.nextLine());
-                    System.out.print("Destino -> ");
-                    Vertex<Airport> destin = getVertex(sc.nextLine());
                     DijkstraProcessor<Route> processor = Route::getDistance;
                     DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(routeArrayGraph, processor);
                     CriticalVertexAlgorithm<Airport, Route> algorithm = new CriticalVertexAlgorithm<>(dijkstraAlgorithm);

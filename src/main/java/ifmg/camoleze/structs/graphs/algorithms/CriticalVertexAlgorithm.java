@@ -22,8 +22,8 @@ public class CriticalVertexAlgorithm<K, V> {
             for (Vertex<K> vertex : kDijkstraResult.path()) {
                 if (vertex.getExitDegree() == 1) {
                     criticalVertex.add(vertex);
-                    results.add(new VertexResult<>(kDijkstraResult, criticalVertex));
                 }
+                results.add(new VertexResult<>(kDijkstraResult, criticalVertex));
             }
         });
 
@@ -49,11 +49,7 @@ public class CriticalVertexAlgorithm<K, V> {
     public record VertexResult<K>(DijkstraAlgorithm.DijkstraResult<K> dijkstraResult, HashSet<Vertex<K>> criticalVertex) {
         @Override
         public String toString() {
-            return "[\n" +
-                    "(Distância: " + dijkstraResult.distance() + ")\n(" +
-                    "Caminho: " + dijkstraResult.path() + ")\n" +
-                    "(Aeroportos Criticos: " + criticalVertex + ")" +
-                    "\n]";
+            return "\r[\n\t" + dijkstraResult + "\n\t(Aeroportos Criticos: " + criticalVertex + ")\n]";
         }
     }
 }
