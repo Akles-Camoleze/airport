@@ -6,13 +6,7 @@ import ifmg.camoleze.structs.graphs.Vertex;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.graphs.ArrayGraph;
 import ifmg.camoleze.structs.map.HashMap;
-import ifmg.camoleze.utils.TimeConverterUtil;
-
 import java.time.Duration;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.util.Objects;
-import java.util.TimeZone;
 
 public class AirNetwork {
     private final ArrayList<Vertex<Airport>> vertices;

@@ -1,5 +1,7 @@
-package ifmg.camoleze.structs.graphs;
+package ifmg.camoleze.structs.graphs.algorithms;
 
+import ifmg.camoleze.structs.graphs.Graph;
+import ifmg.camoleze.structs.graphs.Vertex;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
 import ifmg.camoleze.structs.queue.PriorityQueue;

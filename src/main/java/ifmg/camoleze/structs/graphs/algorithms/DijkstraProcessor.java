@@ -1,4 +1,4 @@
-package ifmg.camoleze.structs.graphs;
+package ifmg.camoleze.structs.graphs.algorithms;
 
 import java.math.BigDecimal;
 

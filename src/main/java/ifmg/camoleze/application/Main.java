@@ -5,6 +5,7 @@ import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
 import ifmg.camoleze.structs.graphs.*;
+import ifmg.camoleze.structs.graphs.algorithms.*;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
 import ifmg.camoleze.utils.TimeConverterUtil;
@@ -115,14 +116,19 @@ public class Main {
 
         airNetwork.calculateAllFlightsDuration();
 
-        DijkstraProcessor<Route> processor = Route::getDistance;
-        DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(routeArrayGraph, processor);
-
         try {
+            DijkstraProcessor<Route> processor = Route::getDistance;
+            DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(routeArrayGraph, processor);
+
+            CriticalVertexAlgorithm<Airport, Route> algorithm = new CriticalVertexAlgorithm<>(dijkstraAlgorithm);
+            CriticalVertexAlgorithm.AirportResult<Airport> result = algorithm.findCriticalAirports(source, destin);
+
+            HamiltonianCircuit<Airport, Route, ArrayList<Route>> circuit = new HamiltonianCircuit<>(routeArrayGraph);
+
             System.out.println(dijkstraAlgorithm.dijkstra(source, destin));
             System.out.println(airNetwork.getFastedFlight(source, destin));
-            HamiltonianCircuit<Airport, Route, ArrayList<Route>> circuit = new HamiltonianCircuit<>(routeArrayGraph);
             System.out.println(circuit.findHamiltonianCircuit(source));
+            System.out.println(result);
         } catch (RuntimeException exception) {
             System.out.println(exception.getMessage());
         }
