@@ -109,7 +109,11 @@ public class Main {
         while (true) {
             System.out.println(menu);
             System.out.print("-> ");
-            menu.setOption(sc.nextInt());
+            try {
+                menu.setOption(sc.nextInt());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             System.out.println(start + title + start);
             menu.run();
             System.out.println(end);
