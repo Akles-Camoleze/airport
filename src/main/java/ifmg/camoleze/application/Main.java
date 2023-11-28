@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.function.Predicate;
 
 
@@ -99,38 +100,19 @@ public class Main {
         String filePath = "MalhaAereaUSA.csv";
         readFromFile(filePath);
 
-        LinkedGraph<Airport, Flight> flightLinkedGraph = airNetwork.getFlights();
-        ArrayGraph<Airport, Route> routeArrayGraph = airNetwork.getRoutes();
-        ArrayList<Vertex<Airport>> vertices = airNetwork.getVertices();
-        flightLinkedGraph.showEdges();
-        routeArrayGraph.showEdges();
+        Scanner sc = new Scanner(System.in);
+        Menu menu = new Menu(airNetwork);
+        String start = "-".repeat(40);
+        String title = "Saida";
+        String end = start.repeat(2) + "-".repeat(title.length());
 
-        Vertex<Airport> source = vertices.find(element -> element.getData().getAbbreviation().equals("ABQ"));
-        Vertex<Airport> destin = vertices.find(element -> element.getData().getAbbreviation().equals("SFO"));
-
-        Predicate<Flight> flightPredicate = flight -> flight.getStops() == 0;
-        Predicate<ArrayList<Flight>> predicate = list -> list.filterReferenced(list, flightPredicate).size() > 0;
-        HashMap<Vertex<Airport>, ArrayList<Flight>> flights = flightLinkedGraph.getEdgesFromVertex(source, predicate);
-
-        System.out.println(flights);
-
-        airNetwork.calculateAllFlightsDuration();
-
-        try {
-            DijkstraProcessor<Route> processor = Route::getDistance;
-            DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(routeArrayGraph, processor);
-
-            CriticalVertexAlgorithm<Airport, Route> algorithm = new CriticalVertexAlgorithm<>(dijkstraAlgorithm);
-            ArrayList<CriticalVertexAlgorithm.VertexResult<Airport>> result = algorithm.findCriticalAirports(source);
-
-            HamiltonianCircuit<Airport, Route, ArrayList<Route>> circuit = new HamiltonianCircuit<>(routeArrayGraph);
-
-            System.out.println(dijkstraAlgorithm.dijkstra(source, destin));
-            System.out.println(airNetwork.getFastedFlight(source, destin));
-            System.out.println(circuit.findHamiltonianCircuit(source));
-            System.out.println(result);
-        } catch (RuntimeException exception) {
-            System.out.println(exception.getMessage());
+        while (true) {
+            System.out.println(menu);
+            System.out.print("-> ");
+            menu.setOption(sc.nextInt());
+            System.out.println(start + title + start);
+            menu.run();
+            System.out.println(end);
         }
 
     }
