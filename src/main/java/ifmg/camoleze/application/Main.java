@@ -4,14 +4,10 @@ import ifmg.camoleze.entities.AirNetwork;
 import ifmg.camoleze.entities.Airport;
 import ifmg.camoleze.entities.Flight;
 import ifmg.camoleze.entities.Route;
-import ifmg.camoleze.structs.graphs.DijkstraAlgorithm;
-import ifmg.camoleze.structs.graphs.DijkstraProcessor;
-import ifmg.camoleze.structs.graphs.EdgeProcessor;
-import ifmg.camoleze.structs.graphs.Vertex;
+import ifmg.camoleze.structs.graphs.*;
 import ifmg.camoleze.structs.lists.ArrayList;
 import ifmg.camoleze.structs.map.HashMap;
 import ifmg.camoleze.utils.TimeConverterUtil;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -122,7 +118,8 @@ public class Main {
         try {
             System.out.println(dijkstraAlgorithm.dijkstra(abq, atl));
             System.out.println(airNetwork.getFastedFlight(abq, atl));
-            System.out.println(airNetwork.getRoutes().findPath(abq, abq));
+            HamiltonianCircuit<Airport, Route, ArrayList<Route>> hamiltonianCircuit = new HamiltonianCircuit<>(airNetwork.getRoutes());
+            System.out.println(hamiltonianCircuit.findHamiltonianCircuit(abq));
         } catch (RuntimeException exception) {
             System.out.println(exception.getMessage());
         }

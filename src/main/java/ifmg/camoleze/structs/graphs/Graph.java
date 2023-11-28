@@ -13,6 +13,8 @@ public interface Graph<K, V, U> {
 
     U getEdgesFromVertex(Vertex<K> vertex);
 
+    ArrayList<Vertex<K>> getNeighbors(Vertex<K> vertex);
+
     void processEdges(EdgeProcessor<K, V> edgeProcessor);
 
     default void showEdges() {

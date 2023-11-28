@@ -79,6 +79,22 @@ public class ArrayGraph<K, V> implements Graph<K, V, ArrayList<V>> {
     }
 
     @Override
+    public ArrayList<Vertex<K>> getNeighbors(Vertex<K> vertex) {
+        ArrayList<Vertex<K>> neighbors = new ArrayList<>();
+        int vertexIndex = vertices.indexOf(vertex);
+
+        if (vertexIndex != -1) {
+            for (int i = 0; i < vertices.size(); i++) {
+                if (edges.get(vertexIndex).get(i) != null) {
+                    neighbors.add(vertices.get(i));
+                }
+            }
+        }
+
+        return neighbors;
+    }
+
+    @Override
     public void processEdges(EdgeProcessor<K, V> edgeProcessor) {
         for (int i = 0; i < edges.size(); i++) {
             for (int j = 0; j < edges.get(i).size(); j++) {
@@ -113,13 +129,14 @@ public class ArrayGraph<K, V> implements Graph<K, V, ArrayList<V>> {
         linkedQueue.enqueue(vertices.get(startIndex));
         visited[startIndex] = true;
         predecessor[startIndex] = -1;
+        boolean hamiltonianCheck = startIndex == endIndex;
 
         while (!linkedQueue.isEmpty()) {
             Vertex<K> currentVertex = linkedQueue.dequeue();
             int currentIndex = vertices.indexOf(currentVertex);
 
             for (int i = 0; i < vertices.size(); i++) {
-                if (!visited[i] && edges.get(currentIndex).get(i) != null) {
+                if ((!visited[i] || hamiltonianCheck) && edges.get(currentIndex).get(i) != null) {
                     linkedQueue.enqueue(vertices.get(i));
                     visited[i] = true;
                     predecessor[i] = currentIndex;

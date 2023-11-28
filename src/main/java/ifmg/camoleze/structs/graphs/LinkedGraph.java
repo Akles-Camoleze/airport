@@ -67,6 +67,26 @@ public class LinkedGraph<K, V> implements Graph<K, V, HashMap<Vertex<K>, ArrayLi
         return edges.get(vertices.indexOf(vertex));
     }
 
+    @Override
+    public ArrayList<Vertex<K>> getNeighbors(Vertex<K> vertex) {
+        ArrayList<Vertex<K>> neighbors = new ArrayList<>();
+        int vertexIndex = vertices.indexOf(vertex);
+
+        if (vertexIndex != -1) {
+            HashMap<Vertex<K>, ArrayList<V>> vertexEdges = edges.get(vertexIndex);
+
+            if (vertexEdges != null) {
+                vertexEdges.forEach((neighbor, values) -> {
+                    if (!neighbors.contains(neighbor)) {
+                        neighbors.add(neighbor);
+                    }
+                });
+            }
+        }
+
+        return neighbors;
+    }
+
     public HashMap<Vertex<K>, ArrayList<V>> getEdgesFromVertex(Vertex<K> vertex, Predicate<ArrayList<V>> predicate) {
         return this.getEdgesFromVertex(vertex).copy().filterByValue(predicate);
     }
