@@ -1,26 +1,24 @@
 package ifmg.camoleze.structs.graphs;
 
-import ifmg.camoleze.requirements.Methods;
 import ifmg.camoleze.structs.lists.ArrayList;
 
-public interface Graph<K extends Methods,V extends Methods, U> {
-    void addVertex(K vertex);
+public interface Graph<K, V, U> {
+    void addVertex(Vertex<K> vertex);
 
-    void addEdge(K source, K destination, V value);
+    void addEdge(Vertex<K> source, Vertex<K> destination, V value);
 
-    ArrayList<K> getVertices();
+    ArrayList<Vertex<K>> getVertices();
 
-    U getEdges();
+    ArrayList<U> getEdges();
+
+    U getEdgesFromVertex(Vertex<K> vertex);
+
+    ArrayList<Vertex<K>> getNeighbors(Vertex<K> vertex);
 
     void processEdges(EdgeProcessor<K, V> edgeProcessor);
 
     default void showEdges() {
-        EdgeProcessor<K, V> processor = (source, value, destin) -> {
-            String abbrSource = source.showInGraph();
-            String abbrDestin = destin.showInGraph();
-            String valueToShow = value.showInGraph();
-            System.out.printf("%s-->%s-->%s\n", abbrSource, valueToShow, abbrDestin);
-        };
+        EdgeProcessor<K, V> processor = (k1, v, k2) -> System.out.printf("%s----%s---->%s\n", k1, v, k2);
         this.processEdges(processor);
     }
 }

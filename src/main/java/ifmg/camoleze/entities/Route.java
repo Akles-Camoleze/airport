@@ -1,31 +1,27 @@
 package ifmg.camoleze.entities;
 
 import ifmg.camoleze.requirements.RequiredAttributes;
-import ifmg.camoleze.requirements.Methods;
 
-public class Route extends RequiredAttributes implements Methods {
-    private Integer distance;
+import java.math.BigDecimal;
 
-    public Route(int id, int distance) {
+public class Route extends RequiredAttributes {
+    private BigDecimal distance;
+
+    public Route(int id, BigDecimal distance) {
         super(id);
         this.distance = distance;
     }
 
-    public Integer getDistance() {
+    public BigDecimal getDistance() {
         return distance;
     }
 
-    public void setDistance(Integer distance) {
+    public void setDistance(BigDecimal distance) {
         this.distance = distance;
     }
 
     @Override
-    public String showInGraph() {
-        return this.distance.toString();
-    }
-
-    @Override
     public String toString() {
-        return "Rota{ id: " + id + " Distancia: " + distance + "km }";
+        return "(Rota " + id + ", " + distance + " km)";
     }
 }

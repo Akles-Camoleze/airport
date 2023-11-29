@@ -1,19 +1,25 @@
 package ifmg.camoleze.entities;
 
 import ifmg.camoleze.requirements.RequiredAttributes;
-import ifmg.camoleze.requirements.Methods;
+import ifmg.camoleze.utils.TimeConverterUtil;
 
-public class Flight extends RequiredAttributes implements Methods {
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.util.TimeZone;
+
+public class Flight extends RequiredAttributes {
     private String airline;
-    private String departure;
-    private String arrival;
+    private LocalTime departure;
+    private LocalTime arrival;
     private Integer stops;
+    private Duration duration;
 
     public Flight(int id) {
         super(id);
     }
 
-    public Flight(int id, String airline, String departure, String arrival, Integer stops) {
+    public Flight(int id, String airline, LocalTime departure, LocalTime arrival, Integer stops) {
         super(id);
         this.airline = airline;
         this.departure = departure;
@@ -25,11 +31,11 @@ public class Flight extends RequiredAttributes implements Methods {
         return airline;
     }
 
-    public String getDeparture() {
+    public LocalTime getDeparture() {
         return departure;
     }
 
-    public String getArrival() {
+    public LocalTime getArrival() {
         return arrival;
     }
 
@@ -41,11 +47,11 @@ public class Flight extends RequiredAttributes implements Methods {
         this.airline = airline;
     }
 
-    public void setDeparture(String departure) {
+    public void setDeparture(LocalTime departure) {
         this.departure = departure;
     }
 
-    public void setArrival(String arrival) {
+    public void setArrival(LocalTime arrival) {
         this.arrival = arrival;
     }
 
@@ -53,18 +59,20 @@ public class Flight extends RequiredAttributes implements Methods {
         this.stops = stops;
     }
 
-    @Override
-    public String showInGraph() {
-        return this.toString();
+    public Duration getDuration(TimeZone departureTZ, TimeZone arrivalTZ) {
+        ZonedDateTime zonedDateTime1 = TimeConverterUtil.localTimeToZonedDateTime(this.departure, departureTZ);
+        ZonedDateTime zonedDateTime2 = TimeConverterUtil.localTimeToZonedDateTime(this.arrival, arrivalTZ);
+
+        return TimeConverterUtil.calculateHourDifference(zonedDateTime1, zonedDateTime2);
     }
 
     @Override
     public String toString() {
-        return id + "[" +
-                "airline: " + airline +
-                ", departamento: " + departure +
-                ", partida: " + arrival +
+        return "(Voo " + id +
+                ", airline: " + airline +
+                ", saida: " + departure +
+                ", chegada: " + arrival +
                 ", paradas: " + stops +
-                "]";
+                ")";
     }
 }
