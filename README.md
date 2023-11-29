@@ -1,5 +1,15 @@
 # Simulador de Voo
 
+## Execução do programa
+Na raiz do projeto, compilar os arquivos:
+```bash
+javac -d bin src/main/java/ifmg/camoleze/**/*.java
+```
+Após a compilação, executar o progama:
+```bash
+java -cp bin ifmg.camoleze.application.Main
+```
+
 ## Introdução
 
 A ideia deste trabalho é a manipulação de grafos, desde à definição da estrutrura
