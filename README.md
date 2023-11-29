@@ -5,7 +5,7 @@ Na raiz do projeto, compilar os arquivos:
 ```bash
 javac -d bin src/main/java/ifmg/camoleze/**/*.java
 ```
-Após a compilação, executar o progama:
+Após a compilação, executar o programa:
 ```bash
 java -cp bin ifmg.camoleze.application.Main
 ```
