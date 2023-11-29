@@ -2,6 +2,7 @@ package ifmg.camoleze.structs.set;
 
 import ifmg.camoleze.structs.lists.ArrayList;
 
+@SuppressWarnings("unchecked")
 public class HashSet<E> {
     private final ArrayList<E>[] buckets;
     private static final int DEFAULT_CAPACITY = 16;

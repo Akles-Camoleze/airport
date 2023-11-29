@@ -104,7 +104,7 @@ public class Menu {
                     Vertex<Airport> source = getVertex(sc.nextLine());
                     DijkstraProcessor<Route> processor = Route::getDistance;
                     DijkstraAlgorithm<Airport, Route> dijkstraAlgorithm = new DijkstraAlgorithm<>(routeArrayGraph, processor);
-                    CriticalVertexAlgorithm<Airport, Route> algorithm = new CriticalVertexAlgorithm<>(dijkstraAlgorithm);
+                    CriticalVertexAlgorithm<Airport, Route> algorithm = new CriticalVertexAlgorithm<>(dijkstraAlgorithm, routeArrayGraph);
                     System.out.println(algorithm.findCriticalAirports(source));
                 } catch (RuntimeException e) {
                     System.out.println(e.getMessage());

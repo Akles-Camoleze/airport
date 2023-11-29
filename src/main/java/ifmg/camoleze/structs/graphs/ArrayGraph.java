@@ -107,6 +107,26 @@ public class ArrayGraph<K, V> implements Graph<K, V, ArrayList<V>> {
         }
     }
 
+    @Override
+    public ArrayList<V> getEdgesToVertex(Vertex<K> vertex) {
+        int vertexIndex = vertices.indexOf(vertex);
+
+        if (vertexIndex == -1) {
+            throw new IllegalArgumentException("Vértice não encontrado no grafo.");
+        }
+
+        ArrayList<V> edgesToVertex = new ArrayList<>();
+
+        for (int i = 0; i < vertices.size(); i++) {
+            V edgeValue = edges.get(i).get(vertexIndex);
+            if (edgeValue != null) {
+                edgesToVertex.add(edgeValue);
+            }
+        }
+
+        return edgesToVertex;
+    }
+
     public ArrayList<Vertex<K>> findPath(Vertex<K> start, Vertex<K> end) {
         int startIndex = vertices.indexOf(start);
         int endIndex = vertices.indexOf(end);
